@@ -30,7 +30,6 @@ class VendorResource extends Resource
             'tax' => $this->tax,
             'date' => (string)$this->created_at,
             'products' => $this->products,
-            'old_products' => $this->productsHistory
         ];
     }
 }

@@ -29,4 +29,17 @@ class Company extends Model
     public function saleItems(){
         return $this->hasManyThrough(SaleItem::class, Sale::class);
     }
+    public static function companyCalculate(){
+        $company = request()->attributes->get('company');
+        $sales = $company->sales;
+        $withdraws = $company->withdraws;
+        $payments = $company->payments;
+        $debts = round(($sales->sum('price') - $payments->sum('value')),2);
+        $profit = round((($withdraws->sum('value') - $sales->sum('cost'))*$company->tax),2);
+        $bank_value = round(($payments->sum('value') - $withdraws->sum('value')),2);
+        $company->profit = $profit;
+        $company->debts = $debts;
+        $company->in_bank = $bank_value;
+        return $company;
+    }
 }

@@ -12,10 +12,13 @@ class Product extends Model
         return $this->belongsTo(Vendor::class);
     }
     public function saleItem(){
-        return $this->hasOne(SaleItem::class);
+        return $this->hasMany(SaleItem::class);
     }
     public function orderItem(){
-        return $this->hasOne(OrderItem::class);
+        return $this->hasMany(OrderItem::class);
+    }
+    public function productsHistory(){
+        return $this->hasMany(ProductHistory::class);
     }
     public static function getProducts(){
         return auth()->user()->products;

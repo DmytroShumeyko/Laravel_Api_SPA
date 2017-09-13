@@ -5,20 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductHistoryRequest;
 use App\Http\Resources\ProductHistoryResource;
 use App\ProductHistory;
-use App\Vendor;
-use Illuminate\Http\Request;
+use App\Product;
 
 class ProductHistoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @param  \App\Vendor $vendor
+     * @param  \App\Product $product
      * @return \App\Http\Resources\ProductHistoryResource
      */
-    public function index(Vendor $vendor)
+    public function index(Product $product)
     {
-        return ProductHistoryResource::collection($vendor->productsHistory()->paginate(20));
+        return ProductHistoryResource::collection($product->productsHistory()->paginate(20));
 
     }
 
@@ -26,12 +25,12 @@ class ProductHistoryController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\ProductHistoryRequest  $request
-     * @param  \App\Vendor $vendor
+     * @param  \App\Product $product
      * @return \App\Http\Resources\ProductHistoryResource
      */
-    public function store(ProductHistoryRequest $request, Vendor $vendor)
+    public function store(ProductHistoryRequest $request, Product $product)
     {
-        $data = $vendor->productsHistory()->save(new ProductHistory(request()->only(array_keys($request->rules()))));
+        $data = $product->productsHistory()->save(new ProductHistory(request()->only(array_keys($request->rules()))));
         return new ProductHistoryResource($data);
     }
 
@@ -39,10 +38,10 @@ class ProductHistoryController extends Controller
      * Display the specified resource.
      *
      * @param  \App\ProductHistory  $productHistory
-     * @param  \App\Vendor $vendor
+     * @param  \App\Product $product
      * @return \App\Http\Resources\ProductHistoryResource
      */
-    public function show(Vendor $vendor, ProductHistory $productHistory)
+    public function show(Product $product, ProductHistory $productHistory)
     {
         return new ProductHistoryResource($productHistory);
     }
@@ -51,11 +50,11 @@ class ProductHistoryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\ProductHistoryRequest  $request
-     * @param  \App\Vendor $vendor
+     * @param  \App\Product $product
      * @param  \App\ProductHistory  $productHistory
      * @return \App\Http\Resources\ProductHistoryResource
      */
-    public function update(ProductHistoryRequest $request, Vendor $vendor, ProductHistory $productHistory)
+    public function update(ProductHistoryRequest $request, Product $product, ProductHistory $productHistory)
     {
         $data = tap($productHistory)->update(request()->only(array_keys($request->rules())));
         return new ProductHistoryResource($data);
@@ -64,10 +63,11 @@ class ProductHistoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param  \App\Product $product
      * @param  \App\ProductHistory  $productHistory
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ProductHistory $productHistory)
+    public function destroy(Product $product, ProductHistory $productHistory)
     {
         if ($productHistory->delete()){
             return response()->json(["status" => ["Success"]], 200);

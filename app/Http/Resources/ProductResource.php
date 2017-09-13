@@ -21,7 +21,8 @@ class ProductResource extends Resource
             'price' => $this->price,
             'description' => $this->description,
             'image' => $this->image,
-            'date' => (string)$this->craated_at
+            'date' => (string)$this->craated_at,
+            'old_products' => $this->productsHistory
         ];
     }
 }

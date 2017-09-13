@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Product;
-use App\ProductHistory;
 use App\Vendor;
-use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -57,7 +55,7 @@ class ProductController extends Controller
      */
     public function update(ProductRequest $request, Vendor $vendor, Product $product)
     {
-        ProductHistory::create($product->except('image'));
+        $product->productsHistory()->save($product->except('image','vendor_id'));
         $data = tap($product)->update(request()->only(array_keys($request->rules())));
         return new ProductResource($data);
     }
@@ -65,16 +63,23 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param  \App\Vendor $vendor
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(Vendor $vendor, Product $product)
     {
-        $old_product = $product;
+        $product_copy = $product;
         if ($product->delete()){
-            ProductHistory::create($old_product->except('image'));
+            foreach($product_copy->productsHistory as $item){
+                $item->delete();
+            }
             return response()->json(["status" => ["Success"]], 200);
         }
         return response()->json(["error" => ["Something wont wrong"]], 500);
+    }
+    public static function getProducts()
+    {
+        return new ProductResource(auth()->user()->products);
     }
 }

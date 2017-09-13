@@ -28,7 +28,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('/company', 'CompanyController');
     Route::resource('/vendors', 'VendorController');
     Route::resource('/vendors/{vendor}/products', 'ProductController');
-    Route::resource('/vendors/{vendor}/products_history', 'ProductHistoryController');
+    Route::resource('/products/{product}/products_history', 'ProductHistoryController');
 });
 
 

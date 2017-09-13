@@ -11,10 +11,10 @@ class ProductHistorySeeder extends Seeder
      */
     public function run(Faker $faker)
     {
-        foreach (range(1, 15) as $index) {
+        foreach (range(1, 50) as $index) {
             \App\ProductHistory::create([
                 'name' => $faker->word,
-                'vendor_id' => $faker->numberBetween(1,4),
+                'product_id' => $faker->numberBetween(1,15),
                 'cost' => $faker->randomFloat(2, 0, 100000),
                 'price' => $faker->randomFloat(2, 0, 100000),
                 'description' => $faker->sentence

@@ -15,7 +15,7 @@ class CreateProductHistoriesTable extends Migration
     {
         Schema::create('product_histories', function (Blueprint $table) {
             $table->increments('id')->index();
-            $table->integer('vendor_id')->index();
+            $table->integer('product_id')->index();
             $table->string('name', 50);
             $table->decimal('cost', 10, 2);
             $table->decimal('price', 10, 2);

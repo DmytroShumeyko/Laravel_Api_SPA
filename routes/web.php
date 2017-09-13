@@ -24,7 +24,10 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('/orders', 'OrderController');
         Route::resource('/payments', 'PaymentController');
         Route::resource('/withdraws', 'WithdrawController');
+        Route::get('/company_data', 'CompanyController@getAllCompanyData');
     });
+    Route::get('/user_data', 'UserController@getAllUserData');
+    Route::resource('/users', 'UserController');
     Route::resource('/company', 'CompanyController');
     Route::resource('/vendors', 'VendorController');
     Route::resource('/vendors/{vendor}/products', 'ProductController');

@@ -27,7 +27,7 @@ class CompanyRequest extends FormRequest
             'name' => 'required',
             'owner' => '',
             'phone' => '',
-            'email' => '',
+            'email' => 'required|unique:companies,email,'.$this->get('id'),
             'site' => '',
             'address' => '',
             'current_account' => '',

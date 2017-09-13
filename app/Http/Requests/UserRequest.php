@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class VendorRequest extends FormRequest
+class UserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class VendorRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -25,9 +25,8 @@ class VendorRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'owner' => '',
             'phone' => '',
-            'email' => 'required|unique:vendors,email,'.$this->get('id'),
+            'email' => 'required|unique:users,email,'.$this->get('id'),
             'site' => '',
             'address' => '',
             'current_account' => '',
@@ -35,7 +34,6 @@ class VendorRequest extends FormRequest
             'town' => '',
             'mfo' => '',
             'itn' => '',
-            'tax' => ''
         ];
     }
 }

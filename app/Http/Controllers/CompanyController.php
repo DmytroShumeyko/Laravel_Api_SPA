@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Company;
 use App\Http\Requests\CompanyRequest;
+use App\Http\Resources\CompanyAllDataResource;
 use App\Http\Resources\CompanyResource;
 
 class CompanyController extends Controller
@@ -69,5 +70,14 @@ class CompanyController extends Controller
             return response()->json(["status" => ["Success"]], 200);
         }
         return response()->json(["error" => ["Something wont wrong"]], 500);
+    }
+    /**
+     * Get all user's data (vendors, companies).
+     *
+     * @return \App\Http\Resources\CompanyAllDataResource
+     */
+    public function getAllCompanyData(){
+        $company = request()->attributes->get('company');
+        return new CompanyAllDataResource($company);
     }
 }

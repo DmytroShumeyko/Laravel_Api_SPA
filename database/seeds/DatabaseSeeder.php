@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
              SaleItemSeeder::class,
              SaleSeeder::class,
              VendorSeeder::class,
-             WithdrawSeeder::class
+             WithdrawSeeder::class,
+             UserSeeder::class
          ]);
     }
 }

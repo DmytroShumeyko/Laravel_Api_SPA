@@ -16,8 +16,10 @@ class OrderResource extends Resource
     {
         return [
             'id' => $this->id,
+            'company_id' => $this->company_id,
             'description' => $this->description,
             'date' => $this->date,
+            'status' => $this->status,
             'order_items' => $this->orderItems
         ];
     }

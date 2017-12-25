@@ -16,6 +16,7 @@ class ProductHistoryResource extends Resource
     {
         return [
             'id' => $this->id,
+            'product_id' => $this->product_id,
             'name' => $this->name,
             'cost' => $this->cost,
             'price' => $this->price,

@@ -24,8 +24,9 @@ class OrderRequest extends FormRequest
     public function rules()
     {
         return [
-            'date' => 'required|date',
-            'description' => '',
+            'order.date' => 'required|date',
+            'order.description' => '',
+            'order.company_id' => 'required'
         ];
     }
 }

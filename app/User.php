@@ -34,22 +34,16 @@ class User extends Authenticatable
         return $this->hasMany(Vendor::class);
     }
     public function products(){
-        return $this->hasManyThrough(Product::class, Vendor::class);
+        return $this->hasManyThrough(Product::class, Vendor::class)->orderBy('id', 'desc');
     }
     public function productsHistory(){
-        return $this->hasManyThrough(ProductHistory::class, Vendor::class);
+        return $this->hasManyThrough(ProductHistory::class, Vendor::class)->orderBy('id', 'desc');
     }
     public function sales(){
-        return $this->hasManyThrough(Sale::class, Company::class);
+        return $this->hasManyThrough(Sale::class, Company::class)->orderBy('date', 'desc');
     }
     public function orders(){
-        return $this->hasManyThrough(Order::class, Company::class);
-    }
-    public function payments(){
-        return $this->hasManyThrough(Payment::class, Company::class);
-    }
-    public function withdraws(){
-        return $this->hasManyThrough(Withdraw::class, Company::class);
+        return $this->hasManyThrough(Order::class, Company::class)->orderBy('date', 'desc');
     }
     public static function calculate(){
         $sales = auth()->user()->sales;

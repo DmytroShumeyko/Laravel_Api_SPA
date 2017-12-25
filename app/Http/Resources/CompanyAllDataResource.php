@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Company;
 use Illuminate\Http\Resources\Json\Resource;
 
 class CompanyAllDataResource extends Resource
@@ -33,6 +34,8 @@ class CompanyAllDataResource extends Resource
             'withdraws' => WithdrawResource::collection($this->withdraws),
             'sales' => SaleResource::collection($this->sales),
             'orders' => OrderResource::collection($this->orders),
+            'chart' => Company::companyProfitChart($this->id),
+            'chart2' => Company::companyPaymentsChart($this->id)
         ];
     }
 }

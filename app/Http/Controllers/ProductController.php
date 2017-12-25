@@ -17,7 +17,7 @@ class ProductController extends Controller
      */
     public function index(Vendor $vendor)
     {
-        return ProductResource::collection($vendor->products()->paginate(20));
+        return ProductResource::collection($vendor->products());
     }
 
     /**
@@ -82,4 +82,9 @@ class ProductController extends Controller
     {
         return new ProductResource(auth()->user()->products);
     }
+    public function allProducts()
+    {
+        return ProductResource::collection(auth()->user()->products);
+    }
+
 }

@@ -15,7 +15,7 @@ class OrderSeeder extends Seeder
             \App\Order::create([
                 'company_id' => $faker->numberBetween(1,5),
                 'description' => $faker->sentence,
-                'date' => $faker->dateTime
+                'date' => $faker->date
             ]);
         }
     }

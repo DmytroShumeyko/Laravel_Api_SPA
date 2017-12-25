@@ -17,7 +17,7 @@ class ProductHistoryController extends Controller
      */
     public function index(Product $product)
     {
-        return ProductHistoryResource::collection($product->productsHistory()->paginate(20));
+        return ProductHistoryResource::collection($product->productsHistory());
 
     }
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserAllDataResource;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Cache;
 
 class UserController extends Controller
 {
@@ -39,6 +40,9 @@ class UserController extends Controller
      * @return \App\Http\Resources\UserAllDataResource
      */
     public function getAllUserData(){
-        return new UserAllDataResource(auth()->user());
+//        Cache::forget('data'.auth()->id());
+        return Cache::rememberForever('data'.auth()->id(), function () {
+            return json_encode(new UserAllDataResource(auth()->user()));
+        });
     }
 }

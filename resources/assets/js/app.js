@@ -8,6 +8,13 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+/* Vuex */
+import store from './vuex';
+/* VueRouter */
+import router from './routes';
+/* VueSweetAlert */
+import VueSweetAlert from 'vue-sweetalert'
+window.Vue.use(VueSweetAlert);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -15,8 +22,21 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example', require('./components/Example.vue'));
+Vue.component('AddModal', require('./components/AddModal'));
+Vue.component('OrderModal', require('./components/OrderModal'));
+
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    router,
+    store,
+    mounted() {
+
+    },
+    created() {
+        this.$store.dispatch('loadData');
+    },
 });
+$(document).ready(function () {
+
+})

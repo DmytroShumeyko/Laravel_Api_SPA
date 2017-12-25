@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Company;
 use App\User;
-use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -25,11 +23,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        session([
-            'company_id' => 2
-        ]);
-        $data = User::calculate();
-        return view('home', compact('data'));
+//        session([
+//            'company_id' => 2
+//        ]);
+//        $data = User::calculate();
+        return view('home');
     }
 
 }

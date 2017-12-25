@@ -2,9 +2,10 @@
 
 namespace App\Http\Resources;
 
+use App\Product;
 use Illuminate\Http\Resources\Json\Resource;
 
-class ProductResource extends Resource
+class ProductAllDataResource extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -24,6 +25,10 @@ class ProductResource extends Resource
             'image' => $this->image,
             'date' => (string)$this->craated_at,
             'old_products' => ProductHistoryResource::collection($this->productsHistory),
+            'sale_items' => SaleItemResource::collection($this->saleItem),
+            'order_items' => OrderItemResource::collection($this->orderItem),
+            'product_chart' => Product::productSaleChart($this->id),
+            'product_chart2' => Product::productProfitChart($this->id)
         ];
     }
 }

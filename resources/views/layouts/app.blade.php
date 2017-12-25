@@ -46,6 +46,12 @@
                             <li><a href="{{ route('login') }}">Login</a></li>
                             <li><a href="{{ route('register') }}">Register</a></li>
                         @else
+                            <router-link tag="li" to="/"><a>Dashboard</a></router-link>
+                            <router-link tag="li" to="/products"><a>Products</a></router-link>
+                            <router-link tag="li" to="/orders"><a>Orders</a></router-link>
+                            <router-link tag="li" to="/sales"><a>Sales</a></router-link>
+                            <router-link tag="li" to="/vendors"><a>Vendors</a></router-link>
+
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     {{ Auth::user()->name }} <span class="caret"></span>

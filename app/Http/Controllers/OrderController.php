@@ -5,72 +5,101 @@ namespace App\Http\Controllers;
 use App\Http\Requests\OrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Order;
+use App\OrderItem;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
+
     /**
-     * Display a listing of the resource.
-     *
-     * @return \App\Http\Resources\OrderResource
+     * OrderController constructor.
      */
-    public function index()
+    public function __construct()
     {
-        $company = request()->attributes->get('company');
-        return OrderResource::collection($company->orders);
+
+        $this->middleware('checkCompany')->except('destroy');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\OrderRequest  $request
-     * @return \App\Http\Resources\OrderResource
+     * @param OrderRequest $request
+     * @return OrderResource
      */
     public function store(OrderRequest $request)
     {
-        $company = request()->attributes->get('company');
-        $data = $company->orders()->save(new Order(request()->only(array_keys($request->rules()))));
-        return new OrderResource($data);
-    }
+        $order = null;
+        DB::transaction(function () use ($request, &$order) {
+            $company = request()->attributes->get('company');
+            $order = $company->orders()->save(new Order([
+                'date' => $request->input('order.date'),
+                'company_id' => $request->input('order.company_id'),
+                'description' => $request->input('order.description'),
+                'status' => $request->input('order.status')
+            ]));
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Order  $order
-     * @return \App\Http\Resources\OrderResource
-     */
-    public function show(Order $order)
-    {
+            foreach ($request->input('order.order_items') as $item) {
+                $order->orderItems()->save(new OrderItem([
+                    'description' => $item['description'],
+                    'qtu' => $item['qtu'],
+                    'product_id' => $item['product_id']
+                ]));
+            }
+        });
         return new OrderResource($order);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\OrderRequest  $request
-     * @param  \App\Order  $order
-     * @return \App\Http\Resources\OrderResource
+     * @param OrderRequest $request
+     * @param Order $order
+     * @return OrderResource
      */
     public function update(OrderRequest $request, Order $order)
     {
-        $data = tap($order)->update(request()->only(array_keys($request->rules())));
-        return new OrderResource($data);
+        DB::transaction(function () use ($request, &$order) {
+            tap($order)->update([
+                'date' => $request->input('order.date'),
+                'company_id' => $request->input('order.company_id'),
+                'description' => $request->input('order.description'),
+                'status' => $request->input('order.status')
+            ]);
+            foreach ($order->orderItems as $item) {
+                $item->delete();
+            }
+            foreach ($request->input('order.order_items') as $item) {
+                $order->orderItems()->save(new OrderItem([
+                    'description' => $item['description'],
+                    'qtu' => $item['qtu'],
+                    'product_id' => $item['product_id']
+                ]));
+            }
+        });
+        $order = Order::find($request->input('order.id'));
+        return new OrderResource($order);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Order  $order
-     * @return \Illuminate\Http\Response
+     * @param Order $order
+     * @return OrderResource
      */
     public function destroy(Order $order)
     {
-        $order_copy = $order;
-        if ($order->delete()){
-            foreach($order_copy->orderItems as $item){
-                $item->delete();
+        DB::transaction(function () use (&$order) {
+            $companies = auth()->user()->companies;
+            if (!$companies->contains('id', $order->company_id)) {
+                return response()->json(["error" => ["Access denied"]], 401);
             }
-            return response()->json(["status" => ["Success"]], 200);
-        }
-        return response()->json(["error" => ["Something wont wrong"]], 500);
+            $order_copy = $order;
+            if (tap($order)->delete()) {
+                foreach ($order_copy->orderItems as $item) {
+                    $item->delete();
+                }
+            }
+        });
+        return new OrderResource($order);
     }
 }

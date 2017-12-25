@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Company;
 use Illuminate\Http\Resources\Json\Resource;
 
 class UserAllDataResource extends Resource
@@ -9,7 +10,7 @@ class UserAllDataResource extends Resource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request
+     * @param $request
      * @return array
      */
     public function toArray($request)
@@ -28,6 +29,10 @@ class UserAllDataResource extends Resource
             'itn' => $this->itn,
             'companies' => CompanyAllDataResource::collection($this->companies),
             'vendors' => VendorResource::collection($this->vendors),
+            'products' => ProductAllDataResource::collection($this->products),
+            'orders' => OrderResource::collection($this->orders),
+            'sales' => SaleResource::collection($this->sales),
+            'chart' => Company::companiesProfitChart($this->id)
         ];
     }
 }

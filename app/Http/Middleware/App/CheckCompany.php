@@ -10,16 +10,19 @@ class CheckCompany
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Closure $next
+     * @param $request
+     * @param Closure $next
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
-        if (session()->has('company_id')) {
-            $company = Company::find(session('company_id'));
-            $request->attributes->add(['company' => $company]);
-            return $next($request);
+        if ($request->has('company_id')) {
+            $companies = auth()->user()->companies;
+            if ($companies->contains('id', $request->input('company_id'))) {
+                $company = Company::find($request->input('company_id'));
+                $request->attributes->add(['company' => $company]);
+                return $next($request);
+            }
         }
         return response()->json(["error" => ["Access denied"]], 401);
     }

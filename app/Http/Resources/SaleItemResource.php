@@ -19,7 +19,8 @@ class SaleItemResource extends Resource
             'product_id' => $this->product_id,
             'qtu' => $this->qtu,
             'cost' => $this->cost,
-            'date' => (string)$this->craated_at
+            'price' => $this->price,
+            'date' => (string)$this->created_at
         ];
     }
 }

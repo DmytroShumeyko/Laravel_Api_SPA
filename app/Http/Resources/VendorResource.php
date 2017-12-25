@@ -29,7 +29,7 @@ class VendorResource extends Resource
             'itn' => $this->itn,
             'tax' => $this->tax,
             'date' => (string)$this->created_at,
-            'products' => $this->products,
+            'products' => ProductResource::collection($this->products),
         ];
     }
 }

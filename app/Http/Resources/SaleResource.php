@@ -16,6 +16,7 @@ class SaleResource extends Resource
     {
         return [
             'id' => $this->id,
+            'company_id' => $this->company_id,
             'date' => $this->date,
             'ttn' => $this->ttn,
             'cost' => $this->cost,

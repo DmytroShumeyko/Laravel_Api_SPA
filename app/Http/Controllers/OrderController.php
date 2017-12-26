@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\OrderRequest;
 use App\Http\Resources\OrderResource;
+use App\Jobs\CacheOrders;
 use App\Order;
 use App\OrderItem;
 use Illuminate\Support\Facades\DB;
@@ -46,6 +47,7 @@ class OrderController extends Controller
                 ]));
             }
         });
+        dispatch(new CacheOrders());
         return new OrderResource($order);
     }
 
@@ -77,6 +79,7 @@ class OrderController extends Controller
             }
         });
         $order = Order::find($request->input('order.id'));
+        dispatch(new CacheOrders());
         return new OrderResource($order);
     }
 
@@ -100,6 +103,7 @@ class OrderController extends Controller
                 }
             }
         });
+        dispatch(new CacheOrders());
         return new OrderResource($order);
     }
 }

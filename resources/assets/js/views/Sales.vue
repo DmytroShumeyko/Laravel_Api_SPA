@@ -2,7 +2,7 @@
     <div class="sales flex">
         <div class="sales__item card">
             <div class="centreXY">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Add
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#saleModal">Add
                     Sale
                 </button>
             </div>
@@ -23,14 +23,15 @@
                 </router-link>
             </div>
         </div>
-        <!--<add-modal :title="sale" :action="add" :data=""></add-modal>-->
+        <sale-modal modal_action="add" modal_data=""></sale-modal>
     </div>
 </template>
 
 <script>
-    import AddModal from '../components/AddModal'
+    import SaleModal from '../components/SaleModal'
 
     export default {
+        components: {SaleModal},
         computed: {
             sales() {
                 return this.$store.state.sales;

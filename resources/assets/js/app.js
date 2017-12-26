@@ -24,6 +24,7 @@ window.Vue.use(VueSweetAlert);
 
 Vue.component('AddModal', require('./components/AddModal'));
 Vue.component('OrderModal', require('./components/OrderModal'));
+Vue.component('SaleModal', require('./components/SaleModal'));
 
 
 const app = new Vue({

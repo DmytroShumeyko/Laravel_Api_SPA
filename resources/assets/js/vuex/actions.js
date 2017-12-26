@@ -5,11 +5,15 @@ const  loadData =({commit}) => {
             commit('setData', data);
         });
 };
-const createOrder = ({commit}, data) => {
+const createItem = ({commit}, itemData) => {
     commit('ajax',false);
-    axios.post('/api/orders/', {'order' : data, 'company_id' : data.company_id})
+    let data_sent = {};
+    data_sent[itemData.condition] = itemData.data;
+    data_sent['company_id'] = itemData.data.company_id;
+
+    axios.post('/api/'+itemData.condition+'s/', data_sent)
         .then(({data}) => {
-            commit('addOrder',data.data);
+            commit('add'+capitalize(itemData.condition), data.data);
             commit('ajax', true);
             commit('clearErrors');
         })
@@ -22,33 +26,36 @@ const createOrder = ({commit}, data) => {
             }
         });
 };
-const editOrder = ({commit}, data) => {
+const editItem = ({commit}, itemData) => {
     commit('ajax',false);
-    axios.patch('/api/orders/' + data.id, {'order' : data, 'company_id' : data.company_id})
+    let data_sent = {};
+    data_sent[itemData.condition] = itemData.data;
+    data_sent['company_id'] = itemData.data.company_id;
+
+    axios.patch('/api/'+itemData.condition+'s/' + itemData.data.id, data_sent)
         .then(({data}) => {
-            commit('updateOrder',data.data);
+            commit('update'+capitalize(itemData.condition),data.data);
             commit('ajax', true);
             commit('clearErrors');
         })
         .catch(error => {
             console.log(error);
-                commit('ajax', true);
-                if (error.response.status === 422) {
-                    commit('addErrors', {data: error.response.data.errors});
-                } else {
-                    commit('addErrors', {data: {error: ['Something went wrong. Please try again']}});
-                }
+            commit('ajax', true);
+            if (error.response.status === 422) {
+                commit('addErrors', {data: error.response.data.errors});
+            } else {
+                commit('addErrors', {data: {error: ['Something went wrong. Please try again']}});
+            }
         });
 };
-const deleteOrder =({commit}, data) => {
+const deleteItem =({commit}, itemData) => {
     commit('ajax',false);
-    axios.delete('/api/orders/' + data.id)
+    axios.delete('/api/'+itemData.condition+'s/' + itemData.data.id)
         .then(({data}) => {
-            commit('delOrder', data.data);
+            commit('del'+capitalize(itemData.condition), data.data);
             commit('ajax', true);
         });
 };
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -120,4 +127,7 @@ const addGoal = ({commit}, goal) => {
             }
         });
 };
-export {addGoal,changeGoal,delEmployee,deleteOrder,createEmployee,createOrder,loadData, editOrder}
+function capitalize(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+export {addGoal,changeGoal,delEmployee,createEmployee,loadData, createItem, deleteItem, editItem}

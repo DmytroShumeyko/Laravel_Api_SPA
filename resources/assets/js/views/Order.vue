@@ -85,7 +85,8 @@
                     confirmButtonText: 'Yes, delete it!',
                     cancelButtonText: 'No, keep it'
                 }).then(function () {
-                        this.$store.dispatch('deleteOrder', this.order)
+                        let data = {'condition':'order', 'data': this.order};
+                        this.$store.dispatch('deleteItem', data)
                             .then(() => {
                                 router.go(-1);
                             });

@@ -1,8 +1,16 @@
 <template>
     <div class="sale">
         <div v-if="sale" class="panel panel-default">
-            <div class="panel-heading">
+            <div class="panel-heading sale__header">
                 <h1>{{company.name}}</h1>
+                <div class="sale__icons">
+                    <button type="button" class="btn btn-primary" @click="edit()">Edit
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="btn btn-primary" @click="del()">Delete
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </button>
+                </div>
             </div>
             <div class="panel-body">
                 <div class="sale__info">Date: {{sale.date}}</div>
@@ -41,14 +49,27 @@
                 </div>
             </div>
         </div>
+        <sale-modal modal_action="edit" :modal_data.sync="sale"></sale-modal>
     </div>
 </template>
 
 <script>
+    import SaleModal from '../components/SaleModal'
+    import router from '../routes';
+
     export default {
         props: ['id'],
+        components: {SaleModal},
+        data() {
+            return {
+                sale: {}
+            }
+        },
+        created() {
+            this.sale = this.sale_store;
+        },
         computed: {
-            sale(){
+            sale_store(){
                 let sales = this.$store.state.sales;
                 let index = sales.findIndex((x) => x.id === this.id);
                 return sales[index];
@@ -64,6 +85,35 @@
                 let products = this.$store.state.products;
                 let index = products.findIndex((x) => x.id === item.product_id);
                 return products[index].name;
+            },
+            del() {
+                this.$swal({
+                    title: 'Are you sure?',
+                    text: 'You will not be able to recover this order!',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'No, keep it'
+                }).then(function () {
+                        let data = {'condition':'sale', 'data': this.sale};
+                        this.$store.dispatch('deleteItem', data)
+                            .then(() => {
+                                router.go(-1);
+                            });
+                    }.bind(this),
+                    function (dismiss) {
+                        if (dismiss === 'cancel') {
+                            this.$swal(
+                                'Cancelled',
+                                'Order is safe :)',
+                                'error'
+                            );
+                        }
+                    }.bind(this)
+                );
+            },
+            edit() {
+                $("#saleModal").modal('show');
             }
         }
     }
@@ -74,6 +124,15 @@
             font-size: 2rem;
             text-align: center;
             margin: 10px 0;
+        }
+        &__header {
+            position: relative;
+        }
+        &__icons {
+            position: absolute;
+            right: 0;
+            top: 0;
+            margin: 28px;
         }
     }
 </style>

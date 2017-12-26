@@ -24,12 +24,12 @@ class SaleRequest extends FormRequest
     public function rules()
     {
         return [
-            'date' => 'required|date',
-            'ttn' => 'required|unique:sales',
-            'cost' => '',
-            'price' => '',
-            'payed' => '',
-            'description' => '',
+            'sale.cost' => '',
+            'sale.price' => '',
+            'sale.payed' => '',
+            'sale.date' => 'required|date',
+            'sale.description' => '',
+            'sale.company_id' => 'required'
         ];
     }
 }

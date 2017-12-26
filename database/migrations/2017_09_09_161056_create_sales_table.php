@@ -16,7 +16,7 @@ class CreateSalesTable extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->increments('id')->index();
             $table->integer('company_id')->index();
-            $table->dateTime('date')->index();
+            $table->date('date')->index();
             $table->string('ttn', 20)->unique();
             $table->decimal('cost', 10, 2);
             $table->decimal('price', 10, 2);

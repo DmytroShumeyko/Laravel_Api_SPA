@@ -45,17 +45,5 @@ class User extends Authenticatable
     public function orders(){
         return $this->hasManyThrough(Order::class, Company::class)->orderBy('date', 'desc');
     }
-    public static function calculate(){
-        $sales = auth()->user()->sales;
-        $withdraws = auth()->user()->withdraws;
-        $payments = auth()->user()->payments;
-        $companies = auth()->user()->companies->pluck('name', 'id');
-        $debts = round(($sales->sum('price') - $payments->sum('value')),2);
-        $profit = round((($withdraws->sum('value') - $sales->sum('cost'))*0.765),2);
-        $bank_value = round(($payments->sum('value') - $withdraws->sum('value')),2);
-        $companies->profit = $profit;
-        $companies->debts = $debts;
-        $companies->in_bank = $bank_value;
-        return $companies;
-    }
+
 }

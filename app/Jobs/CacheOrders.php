@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Http\Resources\UserAllDataResource;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -29,8 +30,6 @@ class CacheOrders implements ShouldQueue
      */
     public function handle()
     {
-        Cache::remember('data'.auth()->id(), function () {
-            return json_encode(new UserAllDataResource(auth()->user()));
-        });
+        Cache::forever('data'.auth()->id(),  json_encode(new UserAllDataResource(auth()->user())));
     }
 }

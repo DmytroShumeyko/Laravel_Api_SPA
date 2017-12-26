@@ -27,7 +27,7 @@ class OrderController extends Controller
      * @param OrderRequest $request
      * @return OrderResource
      */
-    public function store(OrderRequest $request)
+    public function store(OrderRequest $request): OrderResource
     {
         $order = null;
         DB::transaction(function () use ($request, &$order) {
@@ -58,7 +58,7 @@ class OrderController extends Controller
      * @param Order $order
      * @return OrderResource
      */
-    public function update(OrderRequest $request, Order $order)
+    public function update(OrderRequest $request, Order $order): OrderResource
     {
         DB::transaction(function () use ($request, &$order) {
             tap($order)->update([
@@ -89,7 +89,7 @@ class OrderController extends Controller
      * @param Order $order
      * @return OrderResource
      */
-    public function destroy(Order $order)
+    public function destroy(Order $order): OrderResource
     {
         DB::transaction(function () use (&$order) {
             $companies = auth()->user()->companies;

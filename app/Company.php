@@ -139,7 +139,7 @@ class Company extends Model
             ->where('companies.id', $id)
             ->selectRaw('companies.tax as tax, sales.date as date, sale_items.cost as cost, sale_items.price as price, sale_items.qtu as qtu')
             ->orderBy('sales.date')->get();
-        $company_pay = Company::join('payments','payments.company_id', 'companies.id')
+        $company_pay = Company::join('payments', 'payments.company_id', 'companies.id')
             ->where('companies.id', $id)
             ->orderBy('payments.date')->get();
         $start = date('Y-m-d', strtotime($products->first()->date));

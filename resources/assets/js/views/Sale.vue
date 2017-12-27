@@ -15,7 +15,7 @@
             <div class="panel-body">
                 <div class="sale__info">Date: {{sale.date}}</div>
                 <div class="sale__info">Description: {{sale.description}}</div>
-                <div class="sale__info">{{sale.ttn}}</div>
+                <div class="sale__info">TTN: {{sale.ttn}}</div>
                 <div class="col-md-6 col-xs-12">
                     <div class="sale__info">Price: {{sale.price}}</div>
                     <div class="sale__info">Cost: {{sale.cost}}</div>

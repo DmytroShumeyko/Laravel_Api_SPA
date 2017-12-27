@@ -8,13 +8,18 @@ class Sale extends Model
 {
     protected $guarded = [];
 
-    public function company(){
+    public function company()
+    {
         return $this->belongsTo(Company::class);
     }
-    public function saleItems(){
+
+    public function saleItems()
+    {
         return $this->hasMany(SaleItem::class);
     }
-    public static function getSales(){
+
+    public static function getSales()
+    {
         return auth()->user()->sales;
     }
 }

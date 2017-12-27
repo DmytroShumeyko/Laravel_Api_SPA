@@ -8,13 +8,18 @@ class Vendor extends Model
 {
     protected $guarded = [];
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
-    public function products(){
+
+    public function products()
+    {
         return $this->hasMany(Product::class);
     }
-    public function productsHistory(){
+
+    public function productsHistory()
+    {
         return $this->hasMany(ProductHistory::class);
     }
 }

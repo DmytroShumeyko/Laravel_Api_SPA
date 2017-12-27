@@ -39,13 +39,13 @@ Route::prefix('api')->group(function () {
         Route::get('/user_data', 'UserController@getAllUserData');
         Route::get('/allProducts', 'ProductController@allProducts');
         Route::resource('/users', 'UserController', ['only' => [
-            'store', 'update', 'destroy'
+            'update'
         ]]);
         Route::resource('/company', 'CompanyController', ['only' => [
-            'store', 'update', 'destroy'
+            'store', 'update'
         ]]);
         Route::resource('/vendors', 'VendorController', ['only' => [
-            'store', 'update', 'destroy'
+            'store', 'update'
         ]]);
         Route::resource('/vendors/{vendor}/products', 'ProductController', ['only' => [
             'store', 'update', 'destroy'

@@ -13,7 +13,7 @@ class UserRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -26,7 +26,7 @@ class UserRequest extends FormRequest
         return [
             'user.name' => 'required',
             'user.phone' => '',
-            'user.email' => 'required|unique:users,email,'.$this->get('id'),
+            'user.email' => 'required|unique:users,email,'.auth()->id(),
             'user.site' => '',
             'user.address' => '',
             'user.current_account' => '',

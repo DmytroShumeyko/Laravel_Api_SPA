@@ -58,6 +58,7 @@
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
+                                    <router-link tag="li" to="/users/{{auth()->id()}}" ><a>User data</a></router-link>
                                     <li>
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();

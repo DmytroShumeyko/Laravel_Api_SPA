@@ -8,13 +8,18 @@ class OrderItem extends Model
 {
     protected $guarded = [];
 
-    public function company(){
+    public function company()
+    {
         return $this->belongsTo(Order::class);
     }
-    public function product(){
+
+    public function product()
+    {
         return $this->belongsTo(Product::class);
     }
-    public function order(){
+
+    public function order()
+    {
         return $this->belongsTo(Order::class);
     }
 }

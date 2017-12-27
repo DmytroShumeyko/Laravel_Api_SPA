@@ -8,13 +8,18 @@ class SaleItem extends Model
 {
     protected $guarded = [];
 
-    public function company(){
+    public function company()
+    {
         return $this->belongsTo(Sale::class);
     }
-    public function product(){
+
+    public function product()
+    {
         return $this->belongsTo(Product::class);
     }
-    public function sale(){
+
+    public function sale()
+    {
         return $this->belongsTo(Sale::class);
     }
 }

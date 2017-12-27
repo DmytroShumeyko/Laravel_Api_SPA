@@ -8,10 +8,13 @@ class Payment extends Model
 {
     protected $guarded = [];
 
-    public function company(){
+    public function company()
+    {
         return $this->belongsTo(Company::class);
     }
-    public static function getPayments(){
+
+    public static function getPayments()
+    {
         return auth()->user()->payments;
     }
 }

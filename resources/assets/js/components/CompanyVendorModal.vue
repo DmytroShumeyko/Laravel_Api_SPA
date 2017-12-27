@@ -25,7 +25,7 @@
                                        v-model="form_item.name">
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div v-if='modal_condition !== "user"' class="form-group">
                             <div class="col-xs-6">
                                 <label class="control-label">{{capitalize(modal_condition)}} Owner</label>
                             </div>
@@ -106,7 +106,7 @@
                                        v-model="form_item.town">
                             </div>
                         </div>
-                        <div v-if='modal_condition == "company"' class="form-group">
+                        <div v-if='modal_condition === "company"' class="form-group">
                             <div class="col-xs-6">
                                 <label class="control-label">{{capitalize(modal_condition)}} Tax</label>
                             </div>
@@ -120,10 +120,10 @@
                                 <button type="button" class="btn btn-default" data-dismiss="modal">
                                     Close
                                 </button>
-                                <input v-if='modal_action == "edit"' slot="button" class="btn btn-primary" type="submit"
+                                <input v-if='modal_action === "edit"' slot="button" class="btn btn-primary" type="submit"
                                        value="Save" @click.prevent="edit">
-                                <template v-if='modal_action == "add"'>
-                                    <input v-if='modal_condition == "company"'
+                                <template v-if='modal_action === "add"'>
+                                    <input v-if='modal_condition === "company"'
                                            :disabled="form_item.name === '' || form_item.tax === ''" slot="button"
                                            class="btn btn-primary" type="submit"
                                            value="Save" @click.prevent="add">

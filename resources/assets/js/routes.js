@@ -54,11 +54,12 @@ let routes = [
         component: require('./views/Order'),
         props: true
     },
-
-
-
-
-
+    {
+        path: '/users/:id',
+        name: 'users',
+        component: require('./views/User'),
+        props: true
+    },
 ];
 
 const router = new VueRouter({

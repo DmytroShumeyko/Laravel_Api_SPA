@@ -8,10 +8,13 @@ class ProductHistory extends Model
 {
     protected $guarded = [];
 
-    public function vendor(){
+    public function vendor()
+    {
         return $this->belongsTo(Product::class);
     }
-    public static function getProductsHistory(){
+
+    public static function getProductsHistory()
+    {
         return auth()->user()->productsHistory;
     }
 }

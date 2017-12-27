@@ -8,10 +8,13 @@ class Withdraw extends Model
 {
     protected $guarded = [];
 
-    public function company(){
+    public function company()
+    {
         return $this->belongsTo(Company::class);
     }
-    public static function getWithdraws(){
+
+    public static function getWithdraws()
+    {
         return auth()->user()->withdraws;
     }
 }

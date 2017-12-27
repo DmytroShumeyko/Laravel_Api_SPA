@@ -5,7 +5,16 @@ const setData = (state, data) => {
     let user = {
         'id': data.id,
         'phone': data.phone,
-        'chart': data.chart
+        'chart': data.chart,
+        'name': data.name,
+        'email': data.email,
+        'site': data.site,
+        'address': data.address,
+        'current_account': data.current_account,
+        'bank': data.bank,
+        'town': data.town,
+        'mfo': data.mfo,
+        'itn': data.itn
     };
     state.user = user;
 };
@@ -153,6 +162,28 @@ const updateVendor = (state, data) => {
     state.vendors[index] = data;
     $('#company-vendorModal').modal('hide');
 };
+/**
+ * User mutation
+ *
+ * @param state
+ * @param data
+ */
+const updateUser = (state, data) => {
+    let user = {
+        'phone': data.phone,
+        'name': data.name,
+        'email': data.email,
+        'site': data.site,
+        'address': data.address,
+        'current_account': data.current_account,
+        'bank': data.bank,
+        'town': data.town,
+        'mfo': data.mfo,
+        'itn': data.itn
+    };
+    state.user = user;
+    $('#company-vendorModal').modal('hide');
+};
 
 const ajax = (state, data) => {
     state.ajax = data;
@@ -186,5 +217,6 @@ export {
     updateVendor,
     addProduct,
     updateProduct,
-    delProduct
+    delProduct,
+    updateUser
 }

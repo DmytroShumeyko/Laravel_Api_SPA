@@ -40,7 +40,7 @@ class Product extends Model
      * @param $id
      * @return array
      */
-    public static function productSaleChart($id) : array
+    public static function productSaleChart($id): array
     {
         $products = Product::join('sale_items', 'sale_items.product_id', 'products.id')
             ->join('sales', 'sales.id', 'sale_items.sale_id')->where('products.id', $id)
@@ -75,7 +75,7 @@ class Product extends Model
             ->where('products.id', $id)
             ->selectRaw('companies.tax as tax, sales.date as date, sale_items.cost as cost, sale_items.price as price, sale_items.qtu as qtu')
             ->orderBy('sales.date')->get();
-			// TODO ->groupBy('sales.date')->selectRaw(sum(companies.tax as tax)...sum...)
+        // TODO ->groupBy('sales.date')->selectRaw(sum(companies.tax as tax)...sum...)
         $start = date('Y-m-d', strtotime($products->first()->date));
         $end = date('Y-m-d', strtotime($products->last()->date));
         $generate = self::datesArray($start, $end);
@@ -105,7 +105,7 @@ class Product extends Model
      * @param $ends
      * @return array
      */
-    public static function datesArray($starts, $ends) : array
+    public static function datesArray($starts, $ends): array
     {
         $start = date_create_from_format("Y-m-d", $starts)->modify("first day of this month");
         $end = date_create_from_format("Y-m-d", $ends)->modify("first day of this month");

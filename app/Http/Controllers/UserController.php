@@ -5,32 +5,35 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserAllDataResource;
 use App\Http\Resources\UserResource;
+use App\Jobs\CacheData;
+use App\User;
 use Illuminate\Support\Facades\Cache;
 
 class UserController extends Controller
 {
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \App\Http\Resources\UserResource
-     */
-    public function show($id)
-    {
-        return new UserResource(auth()->user());
-    }
-
-    /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UserRequest  $request
-     * @param  int  $id
-     * @return \App\Http\Resources\UserResource
+     * @param UserRequest $request
+     * @param User $user
+     * @return UserResource
      */
-    public function update(UserRequest $request, $id)
+    public function update(UserRequest $request, User $user): UserResource
     {
-        $data = tap(auth()->user())->update(request()->only(array_keys($request->rules())));
+        $data = tap(auth()->user())->update([
+            'name' => $request->input('user.name'),
+            'phone' => $request->input('user.phone'),
+            'email' => $request->input('user.email'),
+            'site' => $request->input('user.site'),
+            'address' => $request->input('user.address'),
+            'current_account' => $request->input('vendor.current_account'),
+            'bank' => $request->input('user.bank'),
+            'town' => $request->input('user.town'),
+            'mfo' => $request->input('user.mfo'),
+            'itn' => $request->input('user.itn')
+        ]);
+        dispatch(new CacheData());
         return new UserResource($data);
     }
 
@@ -39,9 +42,10 @@ class UserController extends Controller
      *
      * @return \App\Http\Resources\UserAllDataResource
      */
-    public function getAllUserData(){
+    public function getAllUserData()
+    {
 //        Cache::forget('data'.auth()->id());
-        return Cache::rememberForever('data'.auth()->id(), function () {
+        return Cache::rememberForever('data' . auth()->id(), function () {
             return json_encode(new UserAllDataResource(auth()->user()));
         });
     }

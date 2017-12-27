@@ -61826,7 +61826,7 @@ var createItem = function createItem(_ref3, itemData) {
     data_sent['company_id'] = itemData.data.company_id;
     var url = '/';
     if (itemData.condition === 'company') {
-        url = '/api/companies/';
+        url = '/api/company/';
     } else {
         url = '/api/' + itemData.condition + 's/';
     }
@@ -61855,7 +61855,7 @@ var editItem = function editItem(_ref5, itemData) {
     data_sent['company_id'] = itemData.data.company_id;
     var url = '/';
     if (itemData.condition === 'company') {
-        url = '/api/companies/' + itemData.data.id;
+        url = '/api/company/' + itemData.data.id;
     } else {
         url = '/api/' + itemData.condition + 's/' + itemData.data.id;
     }
@@ -81983,6 +81983,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -82367,6 +82376,40 @@ var render = function() {
                             "current_account",
                             $event.target.value
                           )
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("div", { staticClass: "col-xs-6" }, [
+                    _c("label", { staticClass: "control-label" }, [
+                      _vm._v(
+                        _vm._s(_vm.capitalize(_vm.modal_condition)) + " MFO"
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-xs-6" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form_item.mfo,
+                          expression: "form_item.mfo"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { placeholder: "021548", type: "text" },
+                      domProps: { value: _vm.form_item.mfo },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.form_item, "mfo", $event.target.value)
                         }
                       }
                     })

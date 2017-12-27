@@ -81,6 +81,15 @@
                         </div>
                         <div class="form-group">
                             <div class="col-xs-6">
+                                <label class="control-label">{{capitalize(modal_condition)}} MFO</label>
+                            </div>
+                            <div class="col-xs-6">
+                                <input class="form-control" placeholder="021548" type="text"
+                                       v-model="form_item.mfo">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-6">
                                 <label class="control-label">{{capitalize(modal_condition)}} Bank</label>
                             </div>
                             <div class="col-xs-6">

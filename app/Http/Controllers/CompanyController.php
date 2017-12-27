@@ -44,9 +44,9 @@ class CompanyController extends Controller
      *
      * @param CompanyRequest $request
      * @param Company $company
-     * @return CompanyResource
+     * @return CompanyAllDataResource
      */
-    public function update(CompanyRequest $request, Company $company): CompanyResource
+    public function update(CompanyRequest $request, Company $company): CompanyAllDataResource
     {
         $companies = auth()->user()->companies;
         if (!$companies->contains('id', $company->id)) {
@@ -67,7 +67,7 @@ class CompanyController extends Controller
             'tax' => $request->input('company.tax')
         ]);
         dispatch(new CacheData());
-        return new CompanyResource($data);
+        return new CompanyAllDataResource($data);
     }
 
     /**

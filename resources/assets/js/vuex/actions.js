@@ -11,7 +11,7 @@ const createItem = ({commit}, itemData) => {
     data_sent['company_id'] = itemData.data.company_id;
     let url = '/';
     if (itemData.condition === 'company'){
-        url = '/api/companies/';
+        url = '/api/company/';
     }else{
         url = '/api/' + itemData.condition + 's/';
     }
@@ -38,7 +38,7 @@ const editItem = ({commit}, itemData) => {
     data_sent['company_id'] = itemData.data.company_id;
     let url = '/';
     if (itemData.condition === 'company'){
-        url = '/api/companies/' + itemData.data.id;
+        url = '/api/company/' + itemData.data.id;
     }else{
         url = '/api/' + itemData.condition + 's/' + itemData.data.id;
     }

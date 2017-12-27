@@ -27,7 +27,7 @@ class VendorRequest extends FormRequest
             'vendor.name' => 'required',
             'vendor.owner' => '',
             'vendor.phone' => '',
-            'vendor.email' => 'required|unique:vendors,email,'.$this->get('id'),
+            'vendor.email' => '',
             'vendor.site' => '',
             'vendor.address' => '',
             'vendor.current_account' => '',

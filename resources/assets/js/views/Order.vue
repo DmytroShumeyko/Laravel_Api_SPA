@@ -60,9 +60,17 @@
         },
         computed: {
             order_store() {
-                let orders = this.$store.state.orders;
-                let index = orders.findIndex((x) => x.id === this.id);
-                return orders[index];
+                var company_id = 0;
+                var order_index = 0;
+                this.$store.state.companies.forEach(function (company) {
+                    let index = company.orders.findIndex((x) => x.id === this.id);
+                    if (index !== -1){
+                        company_id = company.id;
+                        order_index = index;
+                    }
+                }.bind(this));
+                let indexCompany = this.$store.state.companies.findIndex((x) => x.id === company_id);
+                return this.$store.state.companies[indexCompany].orders[order_index];
             },
             company() {
                 let companies = this.$store.state.companies;

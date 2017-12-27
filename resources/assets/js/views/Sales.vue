@@ -7,22 +7,25 @@
                 </button>
             </div>
         </div>
-        <div v-for="item in sales" class="sales__item card">
-            <div class="sales__header">
-                <div class="card__title">Company: {{company(item)}}</div>
+        <template v-for="company in companies">
+            <div v-for="item in company.sales" class="sales__item card">
+                <div class="sales__header">
+                    <div class="card__title">Company: {{companyName(item)}}</div>
+                </div>
+                <div class="sales__body">
+                    <div class="card__text">{{item.date}}</div>
+                    <div class="card__text">Price: {{item.price}}</div>
+                    <div class="card__text">Cost: {{item.cost}}</div>
+                    <div class="card__description">{{item.description}}</div>
+                </div>
+                <div class="sales__footer">
+                    <router-link tag="button" class="btn btn-primary" :to="{ name: 'sale', params: { id: item.id }}">
+                        View
+                        details
+                    </router-link>
+                </div>
             </div>
-            <div class="sales__body">
-                <div class="card__text">{{item.date}}</div>
-                <div class="card__text">Price: {{item.price}}</div>
-                <div class="card__text">Cost: {{item.cost}}</div>
-                <div class="card__description">{{item.description}}</div>
-            </div>
-            <div class="sales__footer">
-                <router-link tag="button" class="btn btn-primary" :to="{ name: 'sale', params: { id: item.id }}">View
-                    details
-                </router-link>
-            </div>
-        </div>
+        </template>
         <sale-modal modal_action="add" modal_data=""></sale-modal>
     </div>
 </template>
@@ -33,12 +36,12 @@
     export default {
         components: {SaleModal},
         computed: {
-            sales() {
-                return this.$store.state.sales;
+            companies() {
+                return this.$store.state.companies;
             }
         },
         methods: {
-            company(item) {
+            companyName(item) {
                 let companies = this.$store.state.companies;
                 let index = companies.findIndex((x) => x.id === item.company_id);
                 return companies[index].name;

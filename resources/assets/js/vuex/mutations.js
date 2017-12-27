@@ -2,8 +2,6 @@ const setData = (state, data) => {
     state.companies = data.companies;
     state.vendors = data.vendors;
     state.products = data.products;
-    state.orders = data.orders;
-    state.sales = data.sales;
     let user = {
         'id': data.id,
         'phone': data.phone,
@@ -19,17 +17,20 @@ const setData = (state, data) => {
  * @param data
  */
 const addOrder = (state, data) => {
-    state.orders.unshift(data);
+    let companyIndex = state.companies.findIndex((x) => x.id === data.company_id);
+    state.companies[companyIndex].orders.unshift(data);
     $('#orderModal').modal('hide');
 };
 const updateOrder = (state, data) => {
-    let index = state.orders.findIndex((x) => x.id === data.id);
-    state.orders[index] = data;
+    let companyIndex = state.companies.findIndex((x) => x.id === data.company_id);
+    let index = state.companies[companyIndex].orders.findIndex((x) => x.id === data.id);
+    state.companies[companyIndex].orders[index] = data;
     $('#orderModal').modal('hide');
 };
 const delOrder = (state, data) => {
-    let index = state.orders.findIndex((x) => x.id === data.id);
-    state.orders.splice(index, 1);
+    let companyIndex = state.companies.findIndex((x) => x.id === data.company_id);
+    let index = state.companies[companyIndex].orders.findIndex((x) => x.id === data.id);
+    state.companies[companyIndex].orders.splice(index, 1);
 };
 
 /**
@@ -39,17 +40,20 @@ const delOrder = (state, data) => {
  * @param data
  */
 const addSale = (state, data) => {
-    state.sales.unshift(data);
+    let companyIndex = state.companies.findIndex((x) => x.id === data.company_id);
+    state.companies[companyIndex].sales.unshift(data);
     $('#saleModal').modal('hide');
 };
 const updateSale = (state, data) => {
-    let index = state.sales.findIndex((x) => x.id === data.id);
-    state.sales[index] = data;
+    let companyIndex = state.companies.findIndex((x) => x.id === data.company_id);
+    let index = state.companies[companyIndex].sales.findIndex((x) => x.id === data.id);
+    state.companies[companyIndex].sales[index] = data;
     $('#saleModal').modal('hide');
 };
 const delSale = (state, data) => {
-    let index = state.sales.findIndex((x) => x.id === data.id);
-    state.sales.splice(index, 1);
+    let companyIndex = state.companies.findIndex((x) => x.id === data.company_id);
+    let index = state.companies[companyIndex].sales.findIndex((x) => x.id === data.id);
+    state.companies[companyIndex].sales.splice(index, 1);
 };
 
 /**
@@ -65,13 +69,13 @@ const addPayment = (state, data) => {
 };
 const updatePayment = (state, data) => {
     let companyIndex = state.companies.findIndex((x) => x.id === data.company_id);
-    let index = state.payments.findIndex((x) => x.id === data.id);
+    let index = state.companies[companyIndex].payments.findIndex((x) => x.id === data.id);
     state.companies[companyIndex].payments[index] = data;
     $('#pwModal').modal('hide');
 };
 const delPayment = (state, data) => {
     let companyIndex = state.companies.findIndex((x) => x.id === data.company_id);
-    let index = state.payments.findIndex((x) => x.id === data.id);
+    let index = state.companies[companyIndex].payments.findIndex((x) => x.id === data.id);
     state.companies[companyIndex].payments.splice(index, 1);
 };
 
@@ -88,14 +92,34 @@ const addWithdraw = (state, data) => {
 };
 const updateWithdraw = (state, data) => {
     let companyIndex = state.companies.findIndex((x) => x.id === data.company_id);
-    let index = state.withdraws.findIndex((x) => x.id === data.id);
+    let index = state.companies[companyIndex].withdraws.findIndex((x) => x.id === data.id);
     state.companies[companyIndex].withdraws[index] = data;
     $('#pwModal').modal('hide');
 };
 const delWithdraw = (state, data) => {
     let companyIndex = state.companies.findIndex((x) => x.id === data.company_id);
-    let index = state.withdraws.findIndex((x) => x.id === data.id);
+    let index = state.companies[companyIndex].withdraws.findIndex((x) => x.id === data.id);
     state.companies[companyIndex].withdraws.splice(index, 1);
+};
+
+/**
+ * Product mutation
+ *
+ * @param state
+ * @param data
+ */
+const addProduct = (state, data) => {
+    state.products.unshift(data);
+    $('#company-vendorModal').modal('hide');
+};
+const updateProduct = (state, data) => {
+    let index = state.products.findIndex((x) => x.id === data.id);
+    state.products[index] = data;
+    $('#company-vendorModal').modal('hide');
+};
+const delProduct = (state, data) => {
+    let index = state.products.findIndex((x) => x.id === data.id);
+    state.products.splice(index, 1);
 };
 
 /**
@@ -106,12 +130,28 @@ const delWithdraw = (state, data) => {
  */
 const addCompany = (state, data) => {
     state.companies.unshift(data);
-    $('#companyModal').modal('hide');
+    $('#company-vendorModal').modal('hide');
 };
 const updateCompany = (state, data) => {
     let index = state.companies.findIndex((x) => x.id === data.id);
     state.companies[index] = data;
-    $('#companyModal').modal('hide');
+    $('#company-vendorModal').modal('hide');
+};
+
+/**
+ * Vendor mutation
+ *
+ * @param state
+ * @param data
+ */
+const addVendor = (state, data) => {
+    state.vendors.unshift(data);
+    $('#company-vendorModal').modal('hide');
+};
+const updateVendor = (state, data) => {
+    let index = state.vendors.findIndex((x) => x.id === data.id);
+    state.vendors[index] = data;
+    $('#company-vendorModal').modal('hide');
 };
 
 const ajax = (state, data) => {
@@ -141,5 +181,7 @@ export {
     delWithdraw,
     updateCompany,
     updatePayment,
-    updateWithdraw
+    updateWithdraw,
+    addVendor,
+    updateVendor
 }

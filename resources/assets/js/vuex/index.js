@@ -10,10 +10,7 @@ Vue.use(Vuex);
 const state = {
     companies: [],
     vendors: [],
-    payments: [],
-    withdraws: [],
-    orders: [],
-    sales: [],
+    products: [],
     user: [],
     ajax: true,
     errors: ''

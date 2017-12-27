@@ -9,8 +9,14 @@ const createItem = ({commit}, itemData) => {
     let data_sent = {};
     data_sent[itemData.condition] = itemData.data;
     data_sent['company_id'] = itemData.data.company_id;
+    let url = '/';
+    if (itemData.condition === 'company'){
+        url = '/api/companies/';
+    }else{
+        url = '/api/' + itemData.condition + 's/';
+    }
 
-    axios.post('/api/' + itemData.condition + 's/', data_sent)
+    axios.post(url, data_sent)
         .then(({data}) => {
             commit('add' + capitalize(itemData.condition), data.data);
             commit('ajax', true);
@@ -30,8 +36,14 @@ const editItem = ({commit}, itemData) => {
     let data_sent = {};
     data_sent[itemData.condition] = itemData.data;
     data_sent['company_id'] = itemData.data.company_id;
+    let url = '/';
+    if (itemData.condition === 'company'){
+        url = '/api/companies/' + itemData.data.id;
+    }else{
+        url = '/api/' + itemData.condition + 's/' + itemData.data.id;
+    }
 
-    axios.patch('/api/' + itemData.condition + 's/' + itemData.data.id, data_sent)
+    axios.patch(url, data_sent)
         .then(({data}) => {
             commit('update' + capitalize(itemData.condition), data.data);
             commit('ajax', true);

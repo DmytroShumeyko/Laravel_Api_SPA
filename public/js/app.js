@@ -16291,7 +16291,7 @@ window.Vue.use(__WEBPACK_IMPORTED_MODULE_2_vue_sweetalert___default.a);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('AddModal', __webpack_require__(14));
+Vue.component('CompanyVendorModal', __webpack_require__(14));
 Vue.component('OrderModal', __webpack_require__(27));
 Vue.component('SaleModal', __webpack_require__(26));
 Vue.component('PWModal', __webpack_require__(158));
@@ -16549,7 +16549,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/CompanyModal.vue"
+Component.options.__file = "resources/assets/js/components/CompanyVendorModal.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -16559,9 +16559,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-10518de7", Component.options)
+    hotAPI.createRecord("data-v-02cf17ff", Component.options)
   } else {
-    hotAPI.reload("data-v-10518de7", Component.options)
+    hotAPI.reload("data-v-02cf17ff", Component.options)
 ' + '  }
   module.hot.dispose(function (data) {
     disposed = true
@@ -60831,10 +60831,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 var state = {
     companies: [],
     vendors: [],
-    payments: [],
-    withdraws: [],
-    orders: [],
-    sales: [],
+    products: [],
     user: [],
     ajax: true,
     errors: ''
@@ -61827,8 +61824,14 @@ var createItem = function createItem(_ref3, itemData) {
     var data_sent = {};
     data_sent[itemData.condition] = itemData.data;
     data_sent['company_id'] = itemData.data.company_id;
+    var url = '/';
+    if (itemData.condition === 'company') {
+        url = '/api/companies/';
+    } else {
+        url = '/api/' + itemData.condition + 's/';
+    }
 
-    axios.post('/api/' + itemData.condition + 's/', data_sent).then(function (_ref4) {
+    axios.post(url, data_sent).then(function (_ref4) {
         var data = _ref4.data;
 
         commit('add' + capitalize(itemData.condition), data.data);
@@ -61850,8 +61853,14 @@ var editItem = function editItem(_ref5, itemData) {
     var data_sent = {};
     data_sent[itemData.condition] = itemData.data;
     data_sent['company_id'] = itemData.data.company_id;
+    var url = '/';
+    if (itemData.condition === 'company') {
+        url = '/api/companies/' + itemData.data.id;
+    } else {
+        url = '/api/' + itemData.condition + 's/' + itemData.data.id;
+    }
 
-    axios.patch('/api/' + itemData.condition + 's/' + itemData.data.id, data_sent).then(function (_ref6) {
+    axios.patch(url, data_sent).then(function (_ref6) {
         var data = _ref6.data;
 
         commit('update' + capitalize(itemData.condition), data.data);
@@ -61909,12 +61918,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateCompany", function() { return updateCompany; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updatePayment", function() { return updatePayment; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateWithdraw", function() { return updateWithdraw; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addVendor", function() { return addVendor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateVendor", function() { return updateVendor; });
 var setData = function setData(state, data) {
     state.companies = data.companies;
     state.vendors = data.vendors;
     state.products = data.products;
-    state.orders = data.orders;
-    state.sales = data.sales;
     var user = {
         'id': data.id,
         'phone': data.phone,
@@ -61930,21 +61939,30 @@ var setData = function setData(state, data) {
  * @param data
  */
 var addOrder = function addOrder(state, data) {
-    state.orders.unshift(data);
+    var companyIndex = state.companies.findIndex(function (x) {
+        return x.id === data.company_id;
+    });
+    state.companies[companyIndex].orders.unshift(data);
     $('#orderModal').modal('hide');
 };
 var updateOrder = function updateOrder(state, data) {
-    var index = state.orders.findIndex(function (x) {
+    var companyIndex = state.companies.findIndex(function (x) {
+        return x.id === data.company_id;
+    });
+    var index = state.companies[companyIndex].orders.findIndex(function (x) {
         return x.id === data.id;
     });
-    state.orders[index] = data;
+    state.companies[companyIndex].orders[index] = data;
     $('#orderModal').modal('hide');
 };
 var delOrder = function delOrder(state, data) {
-    var index = state.orders.findIndex(function (x) {
+    var companyIndex = state.companies.findIndex(function (x) {
+        return x.id === data.company_id;
+    });
+    var index = state.companies[companyIndex].orders.findIndex(function (x) {
         return x.id === data.id;
     });
-    state.orders.splice(index, 1);
+    state.companies[companyIndex].orders.splice(index, 1);
 };
 
 /**
@@ -61954,21 +61972,30 @@ var delOrder = function delOrder(state, data) {
  * @param data
  */
 var addSale = function addSale(state, data) {
-    state.sales.unshift(data);
+    var companyIndex = state.companies.findIndex(function (x) {
+        return x.id === data.company_id;
+    });
+    state.companies[companyIndex].sales.unshift(data);
     $('#saleModal').modal('hide');
 };
 var updateSale = function updateSale(state, data) {
-    var index = state.sales.findIndex(function (x) {
+    var companyIndex = state.companies.findIndex(function (x) {
+        return x.id === data.company_id;
+    });
+    var index = state.companies[companyIndex].sales.findIndex(function (x) {
         return x.id === data.id;
     });
-    state.sales[index] = data;
+    state.companies[companyIndex].sales[index] = data;
     $('#saleModal').modal('hide');
 };
 var delSale = function delSale(state, data) {
-    var index = state.sales.findIndex(function (x) {
+    var companyIndex = state.companies.findIndex(function (x) {
+        return x.id === data.company_id;
+    });
+    var index = state.companies[companyIndex].sales.findIndex(function (x) {
         return x.id === data.id;
     });
-    state.sales.splice(index, 1);
+    state.companies[companyIndex].sales.splice(index, 1);
 };
 
 /**
@@ -61988,7 +62015,7 @@ var updatePayment = function updatePayment(state, data) {
     var companyIndex = state.companies.findIndex(function (x) {
         return x.id === data.company_id;
     });
-    var index = state.payments.findIndex(function (x) {
+    var index = state.companies[companyIndex].payments.findIndex(function (x) {
         return x.id === data.id;
     });
     state.companies[companyIndex].payments[index] = data;
@@ -61998,7 +62025,7 @@ var delPayment = function delPayment(state, data) {
     var companyIndex = state.companies.findIndex(function (x) {
         return x.id === data.company_id;
     });
-    var index = state.payments.findIndex(function (x) {
+    var index = state.companies[companyIndex].payments.findIndex(function (x) {
         return x.id === data.id;
     });
     state.companies[companyIndex].payments.splice(index, 1);
@@ -62021,7 +62048,7 @@ var updateWithdraw = function updateWithdraw(state, data) {
     var companyIndex = state.companies.findIndex(function (x) {
         return x.id === data.company_id;
     });
-    var index = state.withdraws.findIndex(function (x) {
+    var index = state.companies[companyIndex].withdraws.findIndex(function (x) {
         return x.id === data.id;
     });
     state.companies[companyIndex].withdraws[index] = data;
@@ -62031,10 +62058,34 @@ var delWithdraw = function delWithdraw(state, data) {
     var companyIndex = state.companies.findIndex(function (x) {
         return x.id === data.company_id;
     });
-    var index = state.withdraws.findIndex(function (x) {
+    var index = state.companies[companyIndex].withdraws.findIndex(function (x) {
         return x.id === data.id;
     });
     state.companies[companyIndex].withdraws.splice(index, 1);
+};
+
+/**
+ * Product mutation
+ *
+ * @param state
+ * @param data
+ */
+var addProduct = function addProduct(state, data) {
+    state.products.unshift(data);
+    $('#company-vendorModal').modal('hide');
+};
+var updateProduct = function updateProduct(state, data) {
+    var index = state.products.findIndex(function (x) {
+        return x.id === data.id;
+    });
+    state.products[index] = data;
+    $('#company-vendorModal').modal('hide');
+};
+var delProduct = function delProduct(state, data) {
+    var index = state.products.findIndex(function (x) {
+        return x.id === data.id;
+    });
+    state.products.splice(index, 1);
 };
 
 /**
@@ -62045,14 +62096,32 @@ var delWithdraw = function delWithdraw(state, data) {
  */
 var addCompany = function addCompany(state, data) {
     state.companies.unshift(data);
-    $('#companyModal').modal('hide');
+    $('#company-vendorModal').modal('hide');
 };
 var updateCompany = function updateCompany(state, data) {
     var index = state.companies.findIndex(function (x) {
         return x.id === data.id;
     });
     state.companies[index] = data;
-    $('#companyModal').modal('hide');
+    $('#company-vendorModal').modal('hide');
+};
+
+/**
+ * Vendor mutation
+ *
+ * @param state
+ * @param data
+ */
+var addVendor = function addVendor(state, data) {
+    state.vendors.unshift(data);
+    $('#company-vendorModal').modal('hide');
+};
+var updateVendor = function updateVendor(state, data) {
+    var index = state.vendors.findIndex(function (x) {
+        return x.id === data.id;
+    });
+    state.vendors[index] = data;
+    $('#company-vendorModal').modal('hide');
 };
 
 var ajax = function ajax(state, data) {
@@ -64830,8 +64899,8 @@ module.exports = function listToStyles (parentId, list) {
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_LineChart__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_CompanyModal__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_CompanyModal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_CompanyModal__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_CompanyVendorModal__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_CompanyVendorModal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_CompanyVendorModal__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app__ = __webpack_require__(12);
 //
 //
@@ -64899,7 +64968,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    components: { LineChart: __WEBPACK_IMPORTED_MODULE_0__models_LineChart__["a" /* default */], CompanyModal: __WEBPACK_IMPORTED_MODULE_1__components_CompanyModal___default.a },
+    components: { LineChart: __WEBPACK_IMPORTED_MODULE_0__models_LineChart__["a" /* default */], CompanyVendorModal: __WEBPACK_IMPORTED_MODULE_1__components_CompanyVendorModal___default.a },
     data: function data() {
         return {
             datacollection: {}
@@ -64967,6 +65036,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         companyModal: function companyModal() {
             var data = {
                 modal_action: 'add',
+                modal_condition: 'company',
                 modal_data: ''
             };
             $("#companyModal").modal('show');
@@ -81737,13 +81807,13 @@ var content = __webpack_require__(284);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("49d9849e", content, false);
+var update = __webpack_require__(4)("dcf03e10", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-10518de7\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./CompanyModal.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-10518de7\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./CompanyModal.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-02cf17ff\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./CompanyVendorModal.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-02cf17ff\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./CompanyVendorModal.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -81911,6 +81981,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             modal_action: '',
+            modal_condition: '',
             form_item: {
                 id: '',
                 user_id: '',
@@ -81932,8 +82003,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {
         var _this = this;
 
-        __WEBPACK_IMPORTED_MODULE_0__app__["Bus"].$on('companyModal', function (data) {
+        __WEBPACK_IMPORTED_MODULE_0__app__["Bus"].$on('company-vendorModal', function (data) {
             _this.modal_action = data.modal_action;
+            _this.modal_condition = data.modal_condition;
             if (data.modal_action === "edit") {
                 _this.form_item = data.modal_data;
             } else {
@@ -81962,11 +82034,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     methods: {
         edit: function edit() {
-            var data = { 'condition': 'company', 'data': this.form_item };
+            var data = { 'condition': this.modal_condition, 'data': this.form_item };
             this.$store.dispatch('editItem', data).then(function () {});
         },
         add: function add() {
-            var data = { 'condition': 'company', 'data': this.form_item };
+            var data = { 'condition': this.modal_condition, 'data': this.form_item };
             this.$store.dispatch('createItem', data);
         },
         closeAlert: function closeAlert() {
@@ -81992,7 +82064,7 @@ var render = function() {
     {
       staticClass: "modal fade",
       attrs: {
-        id: "companyModal",
+        id: "company-vendorModal",
         tabindex: "-1",
         role: "dialog",
         "aria-labelledby": "myModalLabel"
@@ -82001,7 +82073,15 @@ var render = function() {
     [
       _c("div", { staticClass: "modal-dialog", attrs: { role: "document" } }, [
         _c("div", { staticClass: "modal-content" }, [
-          _vm._m(0, false, false),
+          _c("div", { staticClass: "modal-header" }, [
+            _vm._m(0, false, false),
+            _vm._v(" "),
+            _c(
+              "h4",
+              { staticClass: "modal-title", attrs: { id: "myModalLabel" } },
+              [_vm._v(_vm._s(_vm.capitalize(_vm.modal_condition)))]
+            )
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "modal-body" }, [
             this.$store.state.errors != ""
@@ -82035,7 +82115,13 @@ var render = function() {
               },
               [
                 _c("div", { staticClass: "form-group" }, [
-                  _vm._m(1, false, false),
+                  _c("div", { staticClass: "col-xs-6" }, [
+                    _c("label", { staticClass: "control-label" }, [
+                      _vm._v(
+                        _vm._s(_vm.capitalize(_vm.modal_condition)) + " Name"
+                      )
+                    ])
+                  ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-6" }, [
                     _c("input", {
@@ -82063,7 +82149,13 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group" }, [
-                  _vm._m(2, false, false),
+                  _c("div", { staticClass: "col-xs-6" }, [
+                    _c("label", { staticClass: "control-label" }, [
+                      _vm._v(
+                        _vm._s(_vm.capitalize(_vm.modal_condition)) + " Owner"
+                      )
+                    ])
+                  ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-6" }, [
                     _c("input", {
@@ -82091,7 +82183,13 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group" }, [
-                  _vm._m(3, false, false),
+                  _c("div", { staticClass: "col-xs-6" }, [
+                    _c("label", { staticClass: "control-label" }, [
+                      _vm._v(
+                        _vm._s(_vm.capitalize(_vm.modal_condition)) + " Phone"
+                      )
+                    ])
+                  ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-6" }, [
                     _c("input", {
@@ -82119,7 +82217,13 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group" }, [
-                  _vm._m(4, false, false),
+                  _c("div", { staticClass: "col-xs-6" }, [
+                    _c("label", { staticClass: "control-label" }, [
+                      _vm._v(
+                        _vm._s(_vm.capitalize(_vm.modal_condition)) + " Email"
+                      )
+                    ])
+                  ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-6" }, [
                     _c("input", {
@@ -82150,7 +82254,13 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group" }, [
-                  _vm._m(5, false, false),
+                  _c("div", { staticClass: "col-xs-6" }, [
+                    _c("label", { staticClass: "control-label" }, [
+                      _vm._v(
+                        _vm._s(_vm.capitalize(_vm.modal_condition)) + " Site"
+                      )
+                    ])
+                  ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-6" }, [
                     _c("input", {
@@ -82178,7 +82288,13 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group" }, [
-                  _vm._m(6, false, false),
+                  _c("div", { staticClass: "col-xs-6" }, [
+                    _c("label", { staticClass: "control-label" }, [
+                      _vm._v(
+                        _vm._s(_vm.capitalize(_vm.modal_condition)) + " Address"
+                      )
+                    ])
+                  ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-6" }, [
                     _c("input", {
@@ -82210,7 +82326,14 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group" }, [
-                  _vm._m(7, false, false),
+                  _c("div", { staticClass: "col-xs-6" }, [
+                    _c("label", { staticClass: "control-label" }, [
+                      _vm._v(
+                        _vm._s(_vm.capitalize(_vm.modal_condition)) +
+                          " Bank Account"
+                      )
+                    ])
+                  ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-6" }, [
                     _c("input", {
@@ -82242,7 +82365,13 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group" }, [
-                  _vm._m(8, false, false),
+                  _c("div", { staticClass: "col-xs-6" }, [
+                    _c("label", { staticClass: "control-label" }, [
+                      _vm._v(
+                        _vm._s(_vm.capitalize(_vm.modal_condition)) + " Bank"
+                      )
+                    ])
+                  ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-6" }, [
                     _c("input", {
@@ -82273,7 +82402,13 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group" }, [
-                  _vm._m(9, false, false),
+                  _c("div", { staticClass: "col-xs-6" }, [
+                    _c("label", { staticClass: "control-label" }, [
+                      _vm._v(
+                        _vm._s(_vm.capitalize(_vm.modal_condition)) + " City"
+                      )
+                    ])
+                  ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-6" }, [
                     _c("input", {
@@ -82301,7 +82436,13 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group" }, [
-                  _vm._m(10, false, false),
+                  _c("div", { staticClass: "col-xs-6" }, [
+                    _c("label", { staticClass: "control-label" }, [
+                      _vm._v(
+                        _vm._s(_vm.capitalize(_vm.modal_condition)) + " Tax"
+                      )
+                    ])
+                  ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-6" }, [
                     _c("input", {
@@ -82403,106 +82544,18 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      ),
-      _vm._v(" "),
-      _c("h4", { staticClass: "modal-title", attrs: { id: "myModalLabel" } }, [
-        _vm._v("Company")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xs-6" }, [
-      _c("label", { staticClass: "control-label" }, [_vm._v("Company Name")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xs-6" }, [
-      _c("label", { staticClass: "control-label" }, [_vm._v("Company Owner")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xs-6" }, [
-      _c("label", { staticClass: "control-label" }, [_vm._v("Company Phone")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xs-6" }, [
-      _c("label", { staticClass: "control-label" }, [_vm._v("Company Email")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xs-6" }, [
-      _c("label", { staticClass: "control-label" }, [_vm._v("Company Site")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xs-6" }, [
-      _c("label", { staticClass: "control-label" }, [_vm._v("Company Address")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xs-6" }, [
-      _c("label", { staticClass: "control-label" }, [
-        _vm._v("Company Bank Account")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xs-6" }, [
-      _c("label", { staticClass: "control-label" }, [_vm._v("Company Bank")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xs-6" }, [
-      _c("label", { staticClass: "control-label" }, [_vm._v("Company City")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xs-6" }, [
-      _c("label", { staticClass: "control-label" }, [_vm._v("Company Tax")])
-    ])
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
   }
 ]
 render._withStripped = true
@@ -82510,7 +82563,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-10518de7", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-02cf17ff", module.exports)
   }
 }
 
@@ -82641,7 +82694,7 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c("company-modal")
+      _c("company-vendor-modal")
     ],
     2
   )
@@ -82755,8 +82808,8 @@ exports.push([module.i, "\n#company_orders, #company_sales, #company_payments, #
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_LineChart__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_CompanyModal__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_CompanyModal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_CompanyModal__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_CompanyVendorModal__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_CompanyVendorModal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_CompanyVendorModal__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_PWModal__ = __webpack_require__(158);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_PWModal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_PWModal__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__routes__ = __webpack_require__(16);
@@ -82953,7 +83006,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    components: { LineChart: __WEBPACK_IMPORTED_MODULE_0__models_LineChart__["a" /* default */], CompanyModal: __WEBPACK_IMPORTED_MODULE_1__components_CompanyModal___default.a, PayModal: __WEBPACK_IMPORTED_MODULE_2__components_PWModal___default.a },
+    components: { LineChart: __WEBPACK_IMPORTED_MODULE_0__models_LineChart__["a" /* default */], CompanyModal: __WEBPACK_IMPORTED_MODULE_1__components_CompanyVendorModal___default.a, PayModal: __WEBPACK_IMPORTED_MODULE_2__components_PWModal___default.a },
     props: ['id'],
 
     data: function data() {
@@ -84192,8 +84245,8 @@ exports.push([module.i, "\n.products__item {\n  height: 300px;\n  width: 250px;\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_CompanyModal__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_CompanyModal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_CompanyModal__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_CompanyVendorModal__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_CompanyVendorModal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_CompanyVendorModal__);
 //
 //
 //
@@ -85145,8 +85198,8 @@ exports.push([module.i, "\n.vendors__item {\n  height: 270px;\n  width: 200px;\n
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_CompanyModal__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_CompanyModal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_CompanyModal__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_CompanyVendorModal__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_CompanyVendorModal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_CompanyVendorModal__);
 //
 //
 //
@@ -85753,18 +85806,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     components: { SaleModal: __WEBPACK_IMPORTED_MODULE_0__components_SaleModal___default.a },
     computed: {
-        sales: function sales() {
-            return this.$store.state.sales;
+        companies: function companies() {
+            return this.$store.state.companies;
         }
     },
     methods: {
-        company: function company(item) {
+        companyName: function companyName(item) {
             var companies = this.$store.state.companies;
             var index = companies.findIndex(function (x) {
                 return x.id === item.company_id;
@@ -86795,51 +86851,57 @@ var render = function() {
     [
       _vm._m(0, false, false),
       _vm._v(" "),
-      _vm._l(_vm.sales, function(item) {
-        return _c("div", { staticClass: "sales__item card" }, [
-          _c("div", { staticClass: "sales__header" }, [
-            _c("div", { staticClass: "card__title" }, [
-              _vm._v("Company: " + _vm._s(_vm.company(item)))
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "sales__body" }, [
-            _c("div", { staticClass: "card__text" }, [
-              _vm._v(_vm._s(item.date))
+      _vm._l(_vm.companies, function(company) {
+        return _vm._l(company.sales, function(item) {
+          return _c("div", { staticClass: "sales__item card" }, [
+            _c("div", { staticClass: "sales__header" }, [
+              _c("div", { staticClass: "card__title" }, [
+                _vm._v("Company: " + _vm._s(_vm.companyName(item)))
+              ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "card__text" }, [
-              _vm._v("Price: " + _vm._s(item.price))
+            _c("div", { staticClass: "sales__body" }, [
+              _c("div", { staticClass: "card__text" }, [
+                _vm._v(_vm._s(item.date))
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card__text" }, [
+                _vm._v("Price: " + _vm._s(item.price))
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card__text" }, [
+                _vm._v("Cost: " + _vm._s(item.cost))
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card__description" }, [
+                _vm._v(_vm._s(item.description))
+              ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "card__text" }, [
-              _vm._v("Cost: " + _vm._s(item.cost))
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card__description" }, [
-              _vm._v(_vm._s(item.description))
-            ])
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "sales__footer" },
-            [
-              _c(
-                "router-link",
-                {
-                  staticClass: "btn btn-primary",
-                  attrs: {
-                    tag: "button",
-                    to: { name: "sale", params: { id: item.id } }
-                  }
-                },
-                [_vm._v("View\n                details\n            ")]
-              )
-            ],
-            1
-          )
-        ])
+            _c(
+              "div",
+              { staticClass: "sales__footer" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: {
+                      tag: "button",
+                      to: { name: "sale", params: { id: item.id } }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                    View\n                    details\n                "
+                    )
+                  ]
+                )
+              ],
+              1
+            )
+          ])
+        })
       }),
       _vm._v(" "),
       _c("sale-modal", { attrs: { modal_action: "add", modal_data: "" } })
@@ -87053,13 +87115,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     computed: {
         sale_store: function sale_store() {
-            var _this = this;
+            var company_id = 0;
+            var sale_index = 0;
+            this.$store.state.companies.forEach(function (company) {
+                var _this = this;
 
-            var sales = this.$store.state.sales;
-            var index = sales.findIndex(function (x) {
-                return x.id === _this.id;
+                var index = company.sales.findIndex(function (x) {
+                    return x.id === _this.id;
+                });
+                if (index !== -1) {
+                    company_id = company.id;
+                    sale_index = index;
+                }
+            }.bind(this));
+            var indexCompany = this.$store.state.companies.findIndex(function (x) {
+                return x.id === company_id;
             });
-            return sales[index];
+            return this.$store.state.companies[indexCompany].sales[sale_index];
         },
         company: function company() {
             var _this2 = this;
@@ -87412,18 +87484,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     components: { OrderModal: __WEBPACK_IMPORTED_MODULE_0__components_OrderModal___default.a },
     computed: {
-        orders: function orders() {
-            return this.$store.state.orders;
+        companies: function companies() {
+            return this.$store.state.companies;
         }
     },
     methods: {
-        company: function company(item) {
+        companyName: function companyName(item) {
             var companies = this.$store.state.companies;
             var index = companies.findIndex(function (x) {
                 return x.id === item.company_id;
@@ -88251,43 +88325,45 @@ var render = function() {
     [
       _vm._m(0, false, false),
       _vm._v(" "),
-      _vm._l(_vm.orders, function(item) {
-        return _c("div", { staticClass: "orders__item card" }, [
-          _c("div", { staticClass: "orders__header" }, [
-            _c("div", { staticClass: "card__title" }, [
-              _vm._v("Company: " + _vm._s(_vm.company(item)))
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "orders__body" }, [
-            _c("div", { staticClass: "card__text" }, [
-              _vm._v(_vm._s(item.date))
+      _vm._l(_vm.companies, function(company) {
+        return _vm._l(company.orders, function(item) {
+          return _c("div", { staticClass: "orders__item card" }, [
+            _c("div", { staticClass: "orders__header" }, [
+              _c("div", { staticClass: "card__title" }, [
+                _vm._v("Company: " + _vm._s(_vm.companyName(item)))
+              ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "card__description" }, [
-              _vm._v(_vm._s(item.description))
-            ])
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "orders__footer" },
-            [
-              _c(
-                "router-link",
-                {
-                  staticClass: "btn btn-primary",
-                  attrs: {
-                    tag: "button",
-                    to: { name: "order", params: { id: item.id } }
-                  }
-                },
-                [_vm._v("View\n                details\n            ")]
-              )
-            ],
-            1
-          )
-        ])
+            _c("div", { staticClass: "orders__body" }, [
+              _c("div", { staticClass: "card__text" }, [
+                _vm._v(_vm._s(item.date))
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card__description" }, [
+                _vm._v(_vm._s(item.description))
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "orders__footer" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: {
+                      tag: "button",
+                      to: { name: "order", params: { id: item.id } }
+                    }
+                  },
+                  [_vm._v("View\n                details\n            ")]
+                )
+              ],
+              1
+            )
+          ])
+        })
       }),
       _vm._v(" "),
       _c("order-modal", { attrs: { modal_action: "add", modal_data: "" } })
@@ -88491,13 +88567,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     computed: {
         order_store: function order_store() {
-            var _this = this;
+            var company_id = 0;
+            var order_index = 0;
+            this.$store.state.companies.forEach(function (company) {
+                var _this = this;
 
-            var orders = this.$store.state.orders;
-            var index = orders.findIndex(function (x) {
-                return x.id === _this.id;
+                var index = company.orders.findIndex(function (x) {
+                    return x.id === _this.id;
+                });
+                if (index !== -1) {
+                    company_id = company.id;
+                    order_index = index;
+                }
+            }.bind(this));
+            var indexCompany = this.$store.state.companies.findIndex(function (x) {
+                return x.id === company_id;
             });
-            return orders[index];
+            return this.$store.state.companies[indexCompany].orders[order_index];
         },
         company: function company() {
             var _this2 = this;

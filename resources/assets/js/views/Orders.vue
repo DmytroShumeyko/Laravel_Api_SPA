@@ -7,9 +7,10 @@
                 </button>
             </div>
         </div>
-        <div v-for="item in orders" class="orders__item card">
+        <template v-for="company in companies">
+        <div v-for="item in company.orders" class="orders__item card">
             <div class="orders__header">
-                <div class="card__title">Company: {{company(item)}}</div>
+                <div class="card__title">Company: {{companyName(item)}}</div>
             </div>
             <div class="orders__body">
                 <div class="card__text">{{item.date}}</div>
@@ -21,6 +22,7 @@
                 </router-link>
             </div>
         </div>
+        </template>
         <order-modal modal_action="add" modal_data=""></order-modal>
     </div>
 </template>
@@ -31,12 +33,12 @@
     export default {
         components: {OrderModal},
         computed: {
-            orders() {
-                return this.$store.state.orders;
+            companies() {
+                return this.$store.state.companies;
             }
         },
         methods: {
-            company(item) {
+            companyName(item) {
                 let companies = this.$store.state.companies;
                 let index = companies.findIndex((x) => x.id === item.company_id);
                 return companies[index].name;

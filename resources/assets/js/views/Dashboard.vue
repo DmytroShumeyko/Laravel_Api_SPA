@@ -54,17 +54,17 @@
                         :width="1000"
                         :height="300"></line-chart>
         </div>
-        <company-modal></company-modal>
+        <company-vendor-modal></company-vendor-modal>
     </div>
 </template>
 
 <script>
     import LineChart from '../models/LineChart'
-    import CompanyModal from '../components/CompanyModal'
+    import CompanyVendorModal from '../components/CompanyVendorModal'
     import {Bus} from '../app'
 
     export default {
-        components: {LineChart, CompanyModal},
+        components: {LineChart, CompanyVendorModal},
         data() {
             return {
                 datacollection: {},
@@ -128,6 +128,7 @@
             companyModal(){
                 let data = {
                     modal_action : 'add',
+                    modal_condition : 'company',
                     modal_data : '',
                 };
                 $("#companyModal").modal('show');

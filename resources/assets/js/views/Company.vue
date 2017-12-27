@@ -184,7 +184,7 @@
 
 <script>
     import LineChart from '../models/LineChart'
-    import CompanyModal from '../components/CompanyModal'
+    import CompanyModal from '../components/CompanyVendorModal'
     import PayModal from '../components/PWModal'
     import router from '../routes';
     import {Bus} from '../app'

@@ -1,11 +1,11 @@
 <template>
-    <div class="modal fade" id="companyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal fade" id="company-vendorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Company</h4>
+                    <h4 class="modal-title" id="myModalLabel">{{capitalize(modal_condition)}}</h4>
                 </div>
                 <div class="modal-body">
                     <div v-if="this.$store.state.errors != ''" class="alert alert-danger alert-dismissable">
@@ -18,7 +18,7 @@
 
                         <div class="form-group">
                             <div class="col-xs-6">
-                                <label class="control-label">Company Name</label>
+                                <label class="control-label">{{capitalize(modal_condition)}} Name</label>
                             </div>
                             <div class="col-xs-6">
                                 <input class="form-control" placeholder="Name" type="text"
@@ -27,7 +27,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-xs-6">
-                                <label class="control-label">Company Owner</label>
+                                <label class="control-label">{{capitalize(modal_condition)}} Owner</label>
                             </div>
                             <div class="col-xs-6">
                                 <input class="form-control" placeholder="John" type="text"
@@ -36,7 +36,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-xs-6">
-                                <label class="control-label">Company Phone</label>
+                                <label class="control-label">{{capitalize(modal_condition)}} Phone</label>
                             </div>
                             <div class="col-xs-6">
                                 <input class="form-control" placeholder="+38(011)111-22-33" type="tel"
@@ -45,7 +45,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-xs-6">
-                                <label class="control-label">Company Email</label>
+                                <label class="control-label">{{capitalize(modal_condition)}} Email</label>
                             </div>
                             <div class="col-xs-6">
                                 <input class="form-control" placeholder="example@gmail.com" type="email"
@@ -54,7 +54,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-xs-6">
-                                <label class="control-label">Company Site</label>
+                                <label class="control-label">{{capitalize(modal_condition)}} Site</label>
                             </div>
                             <div class="col-xs-6">
                                 <input class="form-control" placeholder="google.com" type="text"
@@ -63,7 +63,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-xs-6">
-                                <label class="control-label">Company Address</label>
+                                <label class="control-label">{{capitalize(modal_condition)}} Address</label>
                             </div>
                             <div class="col-xs-6">
                                 <input class="form-control" placeholder="Main str. 23" type="text"
@@ -72,7 +72,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-xs-6">
-                                <label class="control-label">Company Bank Account</label>
+                                <label class="control-label">{{capitalize(modal_condition)}} Bank Account</label>
                             </div>
                             <div class="col-xs-6">
                                 <input class="form-control" placeholder="021548556484652" type="text"
@@ -81,7 +81,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-xs-6">
-                                <label class="control-label">Company Bank</label>
+                                <label class="control-label">{{capitalize(modal_condition)}} Bank</label>
                             </div>
                             <div class="col-xs-6">
                                 <input class="form-control" placeholder="First Century Bank" type="text"
@@ -90,7 +90,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-xs-6">
-                                <label class="control-label">Company City</label>
+                                <label class="control-label">{{capitalize(modal_condition)}} City</label>
                             </div>
                             <div class="col-xs-6">
                                 <input class="form-control" placeholder="New-York" type="text"
@@ -99,7 +99,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-xs-6">
-                                <label class="control-label">Company Tax</label>
+                                <label class="control-label">{{capitalize(modal_condition)}} Tax</label>
                             </div>
                             <div class="col-xs-6">
                                 <input class="form-control" placeholder="0.05" type="number"
@@ -136,6 +136,7 @@
         data() {
             return {
                 modal_action: '',
+                modal_condition: '',
                 form_item: {
                     id: '',
                     user_id: '',
@@ -155,8 +156,9 @@
             }
         },
         created() {
-            Bus.$on('companyModal', data => {
+            Bus.$on('company-vendorModal', data => {
                 this.modal_action = data.modal_action;
+                this.modal_condition = data.modal_condition;
                 if (data.modal_action === "edit") {
                     this.form_item = data.modal_data;
                 } else {
@@ -184,14 +186,14 @@
         },
         methods: {
             edit() {
-                let data = {'condition': 'company', 'data': this.form_item};
+                let data = {'condition': this.modal_condition, 'data': this.form_item};
                 this.$store.dispatch('editItem', data)
                     .then(() => {
 
                     });
             },
             add() {
-                let data = {'condition': 'company', 'data': this.form_item};
+                let data = {'condition': this.modal_condition, 'data': this.form_item};
                 this.$store.dispatch('createItem', data);
             },
             closeAlert() {

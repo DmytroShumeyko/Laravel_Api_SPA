@@ -29,7 +29,7 @@
 </template>
 
 <script>
-    import AddModal from '../components/CompanyModal'
+    import AddModal from '../components/CompanyVendorModal'
 
     export default {
         computed: {

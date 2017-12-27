@@ -22,7 +22,7 @@ window.Vue.use(VueSweetAlert);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('AddModal', require('./components/CompanyModal'));
+Vue.component('CompanyVendorModal', require('./components/CompanyVendorModal'));
 Vue.component('OrderModal', require('./components/OrderModal'));
 Vue.component('SaleModal', require('./components/SaleModal'));
 Vue.component('PWModal', require('./components/PWModal'));

@@ -12,10 +12,11 @@ class PaymentResource extends Resource
      * @param  \Illuminate\Http\Request
      * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         return [
             'id' => $this->id,
+            'company_id' => $this->company_id,
             'description' => $this->description,
             'date' => $this->date,
             'value' => $this->value

@@ -32,7 +32,7 @@
 </template>
 
 <script>
-    import AddModal from '../components/AddModal'
+    import AddModal from '../components/CompanyModal'
 
     export default {
         computed: {

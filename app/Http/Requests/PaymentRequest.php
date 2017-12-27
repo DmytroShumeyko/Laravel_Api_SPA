@@ -24,9 +24,9 @@ class PaymentRequest extends FormRequest
     public function rules()
     {
         return [
-            'date' => 'required|date',
-            'value' => 'required|regex:/^\d*(\.\d{2})?$/',
-            'description' => ''
+            'payment.date' => 'required|date',
+            'payment.value' => 'required|regex:/^\d*(\.\d{2})?$/',
+            'payment.description' => ''
         ];
     }
 }

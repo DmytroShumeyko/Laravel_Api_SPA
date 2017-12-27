@@ -15,7 +15,7 @@ class WithdrawSeeder extends Seeder
             \App\Withdraw::create([
                 'company_id' => $faker->numberBetween(1,5),
                 'description' => $faker->word,
-                'date' => $faker->dateTime,
+                'date' => $faker->date,
                 'value' => $faker->randomFloat(2,100,100000)
             ]);
         }

@@ -121,6 +121,9 @@
                             <th>Date</th>
                             <th>Value</th>
                             <th>Description</th>
+                            <th><a href="" @click.prevent="openModal('add','payment','')">
+                                <i class="fa fa-plus" aria-hidden="true">Add</i>
+                            </a></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -128,6 +131,14 @@
                             <td>{{item.date}}</td>
                             <td>{{item.value}}</td>
                             <td>{{item.description}}</td>
+                            <td>
+                                <a href="" @click.prevent="openModal('edit','payment',item)">
+                                    <i class="fa fa-pencil" aria-hidden="true">Edit</i>
+                                </a>
+                                <a href="" @click.prevent="del(item,'payment')">
+                                    <i class="fa fa-times" aria-hidden="true">Delete</i>
+                                </a>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -142,6 +153,9 @@
                             <th>Date</th>
                             <th>Value</th>
                             <th>Description</th>
+                            <th><a href="" @click.prevent="openModal('add','withdraw','')">
+                                <i class="fa fa-plus" aria-hidden="true">Add</i>
+                            </a></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -149,25 +163,42 @@
                             <td>{{item.date}}</td>
                             <td>{{item.value}}</td>
                             <td>{{item.description}}</td>
+                            <td>
+                                <a href="" @click.prevent="openModal('edit','withdraw',item)">
+                                    <i class="fa fa-pencil" aria-hidden="true">Edit</i>
+                                </a>
+                                <a href="" @click.prevent="del(item,'withdraw')">
+                                    <i class="fa fa-times" aria-hidden="true">Delete</i>
+                                </a>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+        <!--<company-modal modal_action="edit" :modal_data.sync="order"></company-modal>-->
+        <pay-modal></pay-modal>
     </div>
 </template>
 
 <script>
     import LineChart from '../models/LineChart'
+    import CompanyModal from '../components/CompanyModal'
+    import PayModal from '../components/PWModal'
+    import router from '../routes';
+    import {Bus} from '../app'
 
     export default {
-        components: {LineChart},
+        components: {LineChart, CompanyModal, PayModal},
         props: ['id'],
 
         data() {
             return {
                 datacollection: {},
+                modal_cond: '',
+                modal_act: '',
+                modal_dat: ''
             }
         },
         created() {
@@ -232,6 +263,42 @@
                 return item.sales.reduce((total, obj) => {
                     return total + (parseFloat(obj.price) - parseFloat(obj.cost)) - (parseFloat(obj.price) * parseFloat(this.company.tax));
                 }, 0);
+            },
+            openModal(action, condition, item){
+                let data = {
+                    modal_action : action,
+                    modal_condition : condition,
+                    modal_data : item,
+                    modal_company : this.company.id
+                };
+                $("#pwModal").modal('show');
+                Bus.$emit('pwModal', data);
+            },
+            del(item, condition) {
+                this.$swal({
+                    title: 'Are you sure?',
+                    text: 'You will not be able to recover this order!',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'No, keep it'
+                }).then(function () {
+                        let data = {'condition':condition, 'data': item};
+                        this.$store.dispatch('deleteItem', data)
+                            .then(() => {
+                                router.go(-1);
+                            });
+                    }.bind(this),
+                    function (dismiss) {
+                        if (dismiss === 'cancel') {
+                            this.$swal(
+                                'Cancelled',
+                                'Order is safe :)',
+                                'error'
+                            );
+                        }
+                    }.bind(this)
+                );
             },
         }
     }

@@ -12,7 +12,7 @@ class SaleItemResource extends Resource
      * @param  \Illuminate\Http\Request
      * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         return [
             'id' => $this->id,

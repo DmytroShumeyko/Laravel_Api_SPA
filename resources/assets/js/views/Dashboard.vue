@@ -2,7 +2,7 @@
     <div class="companies flex">
         <div class="companies__item card">
             <div class="centreXY">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Add
+                <button type="button" class="btn btn-primary" @click.prevent="companyModal()">Add
                     Company
                 </button>
             </div>
@@ -54,16 +54,17 @@
                         :width="1000"
                         :height="300"></line-chart>
         </div>
-        <add-modal></add-modal>
+        <company-modal></company-modal>
     </div>
 </template>
 
 <script>
     import LineChart from '../models/LineChart'
-    import AddModal from '../components/AddModal'
+    import CompanyModal from '../components/CompanyModal'
+    import {Bus} from '../app'
 
     export default {
-        components: {LineChart},
+        components: {LineChart, CompanyModal},
         data() {
             return {
                 datacollection: {},
@@ -123,6 +124,14 @@
                         pointHitRadius: 10
                     }]
                 };
+            },
+            companyModal(){
+                let data = {
+                    modal_action : 'add',
+                    modal_data : '',
+                };
+                $("#companyModal").modal('show');
+                Bus.$emit('companyModal', data);
             }
         }
     }

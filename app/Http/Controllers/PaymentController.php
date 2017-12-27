@@ -2,72 +2,76 @@
 
 namespace App\Http\Controllers;
 
-use App\Company;
 use App\Http\Requests\PaymentRequest;
 use App\Http\Resources\PaymentResource;
+use App\Jobs\CacheData;
 use App\Payment;
-use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \App\Http\Resources\PaymentResource
+     * PaymentController constructor.
      */
-    public function index()
+    public function __construct()
     {
-        $company = request()->attributes->get('company');
-        return PaymentResource::collection($company->payments);
+
+        $this->middleware('checkCompany')->except('destroy');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\PaymentRequest  $request
-     * @return \App\Http\Resources\PaymentResource
+     * @param PaymentRequest $request
+     * @return PaymentResource
      */
-    public function store(PaymentRequest $request)
+    public function store(PaymentRequest $request): PaymentResource
     {
         $company = request()->attributes->get('company');
-        $data = $company->payments()->save(new Payment(request()->only(array_keys($request->rules()))));
+        $data = $company->payments()->save(new Payment([
+            'date' => $request->input('payment.date'),
+            'company_id' => $request->input('payment.company_id'),
+            'description' => $request->input('payment.description'),
+            'value' => $request->input('payment.value')
+        ]));
+        dispatch(new CacheData());
         return new PaymentResource($data);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Payment  $payment
-     * @return \App\Http\Resources\PaymentResource
-     */
-    public function show(Payment $payment)
-    {
-        return new PaymentResource($payment);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\PaymentRequest  $request
-     * @param  \App\Payment  $payment
-     * @return \App\Http\Resources\PaymentResource
+     * @param PaymentRequest $request
+     * @param Payment $payment
+     * @return PaymentResource
      */
-    public function update(PaymentRequest $request, Payment $payment)
+    public function update(PaymentRequest $request, Payment $payment): PaymentResource
     {
-        $data = tap($payment)->update(request()->only(array_keys($request->rules())));
+        $data = tap($payment)->update([
+            'date' => $request->input('payment.date'),
+            'company_id' => $request->input('payment.company_id'),
+            'description' => $request->input('payment.description'),
+            'value' => $request->input('payment.value')
+        ]);
+        dispatch(new CacheData());
         return new PaymentResource($data);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Payment  $payment
-     * @return \Illuminate\Http\Response
+     * @param Payment $payment
+     * @return PaymentResource
      */
-    public function destroy(Payment $payment)
+    public function destroy(Payment $payment): PaymentResource
     {
-        if ($payment->delete()){
-            return response()->json(["status" => ["Success"]], 200);
+        $companies = auth()->user()->companies;
+        if (!$companies->contains('id', $payment->company_id)) {
+            return response()->json(["error" => ["Access denied"]], 401);
+        }
+
+        if (tap($payment)->delete()) {
+            dispatch(new CacheData());
+            return new PaymentResource($payment);
         }
         return response()->json(["error" => ["Something wont wrong"]], 500);
     }

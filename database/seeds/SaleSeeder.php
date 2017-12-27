@@ -18,7 +18,7 @@ class SaleSeeder extends Seeder
                 'price' => $faker->randomFloat(2, 0, 100000),
                 'payed' => $faker->randomFloat(2, 0, 100000),
                 'description' => $faker->sentence,
-                'date' => $faker->dateTime,
+                'date' => $faker->date,
                 'ttn' => $faker->unique()->randomNumber()
             ]);
         }

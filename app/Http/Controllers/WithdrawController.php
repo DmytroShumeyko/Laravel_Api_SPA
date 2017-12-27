@@ -3,71 +3,74 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\WithdrawRequest;
-use App\Http\Requests\WithwrawRequest;
 use App\Http\Resources\WithdrawResource;
+use App\Jobs\CacheData;
 use App\Withdraw;
-use Illuminate\Http\Request;
 
 class WithdrawController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \App\Http\Resources\WithdrawResource
+     * WithdrawController constructor.
      */
-    public function index()
+    public function __construct()
     {
-        $company = request()->attributes->get('company');
-        return WithdrawResource::collection($company->withdraws);
+
+        $this->middleware('checkCompany')->except('destroy');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\WithdrawRequest  $request
-     * @return \App\Http\Resources\WithdrawResource
+     * @param WithdrawRequest $request
+     * @return WithdrawResource
      */
-    public function store(WithdrawRequest $request)
+    public function store(WithdrawRequest $request):WithdrawResource
     {
         $company = request()->attributes->get('company');
-        $data = $company->wathdraws()->save(new Withdraw(request()->only(array_keys($request->rules()))));
+        $data = $company->payments()->save(new Withdraw([
+            'date' => $request->input('withdraw.date'),
+            'company_id' => $request->input('withdraw.company_id'),
+            'description' => $request->input('withdraw.description'),
+            'value' => $request->input('withdraw.value')
+        ]));
+        dispatch(new CacheData());
         return new WithdrawResource($data);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Withdraw  $withdraw
-     * @return \App\Http\Resources\WithdrawResource
-     */
-    public function show(Withdraw $withdraw)
-    {
-        return new WithdrawResource($withdraw);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\WithdrawRequest  $request
-     * @param  \App\Withdraw  $withdraw
-     * @return \App\Http\Resources\WithdrawResource
+     * @param WithdrawRequest $request
+     * @param Withdraw $withdraw
+     * @return WithdrawResource
      */
-    public function update(WithdrawRequest $request, Withdraw $withdraw)
+    public function update(WithdrawRequest $request, Withdraw $withdraw): WithdrawResource
     {
-        $data = tap($withdraw)->update(request()->only(array_keys($request->rules())));
+        $data = tap($withdraw)->update([
+            'date' => $request->input('withdraw.date'),
+            'company_id' => $request->input('withdraw.company_id'),
+            'description' => $request->input('withdraw.description'),
+            'value' => $request->input('withdraw.value')
+        ]);
         return new WithdrawResource($data);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Withdraw  $withdraw
-     * @return \Illuminate\Http\Response
+     * @param Withdraw $withdraw
+     * @return WithdrawResource
      */
     public function destroy(Withdraw $withdraw)
     {
-        if ($withdraw->delete()){
-            return response()->json(["status" => ["Success"]], 200);
+        $companies = auth()->user()->companies;
+        if (!$companies->contains('id', $withdraw->company_id)) {
+            return response()->json(["error" => ["Access denied"]], 401);
+        }
+
+        if (tap($withdraw)->delete()) {
+            dispatch(new CacheData());
+            return new WithdrawResource($withdraw);
         }
         return response()->json(["error" => ["Something wont wrong"]], 500);
     }

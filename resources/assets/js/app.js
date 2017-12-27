@@ -22,10 +22,12 @@ window.Vue.use(VueSweetAlert);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('AddModal', require('./components/AddModal'));
+Vue.component('AddModal', require('./components/CompanyModal'));
 Vue.component('OrderModal', require('./components/OrderModal'));
 Vue.component('SaleModal', require('./components/SaleModal'));
+Vue.component('PWModal', require('./components/PWModal'));
 
+export const Bus = new Vue();
 
 const app = new Vue({
     el: '#app',
@@ -38,6 +40,3 @@ const app = new Vue({
         this.$store.dispatch('loadData');
     },
 });
-$(document).ready(function () {
-
-})

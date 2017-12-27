@@ -24,9 +24,9 @@ class WithdrawRequest extends FormRequest
     public function rules()
     {
         return [
-            'date' => 'required|date',
-            'value' => 'required|regex:/^\d*(\.\d{2})?$/',
-            'description' => '',
+            'withdraw.date' => 'required|date',
+            'withdraw.value' => 'required|regex:/^\d*(\.\d{2})?$/',
+            'withdraw.description' => '',
         ];
     }
 }

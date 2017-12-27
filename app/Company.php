@@ -33,7 +33,12 @@ class Company extends Model
         return $this->hasMany(Sale::class)->orderBy('date', 'desc');
     }
 
-    public static function companyCalculate()
+    /**
+     * Calculate company transactions
+     *
+     * @return object
+     */
+    public static function companyCalculate(): object
     {
         $company = request()->attributes->get('company');
         $sales = $company->sales;
@@ -48,7 +53,13 @@ class Company extends Model
         return $company;
     }
 
-    public static function companiesProfitChart($id)
+    /**
+     * All companies profit chart
+     *
+     * @param $id
+     * @return array
+     */
+    public static function companiesProfitChart($id): array
     {
         $products = Product::join('sale_items', 'sale_items.product_id', 'products.id')
             ->join('sales', 'sales.id', 'sale_items.sale_id')
@@ -77,7 +88,14 @@ class Company extends Model
             'dates' => $dates,
         ];
     }
-    public static function companyProfitChart($id)
+
+    /**
+     * Company profit chart
+     *
+     * @param $id
+     * @return array
+     */
+    public static function companyProfitChart($id): array
     {
         $products = Product::join('sale_items', 'sale_items.product_id', 'products.id')
             ->join('sales', 'sales.id', 'sale_items.sale_id')
@@ -106,7 +124,14 @@ class Company extends Model
             'dates' => $dates,
         ];
     }
-    public static function companyPaymentsChart($id)
+
+    /**
+     * Company payments chart
+     *
+     * @param $id
+     * @return array
+     */
+    public static function companyPaymentsChart($id): array
     {
         $products = Product::join('sale_items', 'sale_items.product_id', 'products.id')
             ->join('sales', 'sales.id', 'sale_items.sale_id')

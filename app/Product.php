@@ -34,6 +34,12 @@ class Product extends Model
         return auth()->user()->products;
     }
 
+    /**
+     * Product sales chart
+     *
+     * @param $id
+     * @return array
+     */
     public static function productSaleChart($id) : array
     {
         $products = Product::join('sale_items', 'sale_items.product_id', 'products.id')
@@ -55,6 +61,12 @@ class Product extends Model
         ];
     }
 
+    /**
+     * Product profit chart
+     *
+     * @param $id
+     * @return array
+     */
     public static function productProfitChart($id): array
     {
         $products = Product::join('sale_items', 'sale_items.product_id', 'products.id')
@@ -86,6 +98,13 @@ class Product extends Model
         ];
     }
 
+    /**
+     * Prepare array for charts
+     *
+     * @param $starts
+     * @param $ends
+     * @return array
+     */
     public static function datesArray($starts, $ends) : array
     {
         $start = date_create_from_format("Y-m-d", $starts)->modify("first day of this month");

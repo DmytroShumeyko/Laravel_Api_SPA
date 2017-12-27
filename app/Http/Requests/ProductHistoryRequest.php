@@ -21,13 +21,13 @@ class ProductHistoryRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => 'required',
             'cost' => 'required|numeric',
             'price' => 'required|numeric',
-            'description' => '',
+            'description' => ''
         ];
     }
 }

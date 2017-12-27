@@ -27,7 +27,6 @@ class VendorResource extends Resource
             'town' => $this->town,
             'mfo' => $this->mfo,
             'itn' => $this->itn,
-            'tax' => $this->tax,
             'date' => (string)$this->created_at,
             'products' => ProductResource::collection($this->products),
         ];

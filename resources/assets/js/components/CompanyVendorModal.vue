@@ -97,7 +97,7 @@
                                        v-model="form_item.town">
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div v-if='modal_condition == "company"' class="form-group">
                             <div class="col-xs-6">
                                 <label class="control-label">{{capitalize(modal_condition)}} Tax</label>
                             </div>
@@ -113,10 +113,16 @@
                                 </button>
                                 <input v-if='modal_action == "edit"' slot="button" class="btn btn-primary" type="submit"
                                        value="Save" @click.prevent="edit">
-                                <input v-if='modal_action == "add"'
-                                       :disabled="form_item.name === '' || form_item.tax === ''" slot="button"
-                                       class="btn btn-primary" type="submit"
-                                       value="Save" @click.prevent="add">
+                                <template v-if='modal_action == "add"'>
+                                    <input v-if='modal_condition == "company"'
+                                           :disabled="form_item.name === '' || form_item.tax === ''" slot="button"
+                                           class="btn btn-primary" type="submit"
+                                           value="Save" @click.prevent="add">
+                                    <input v-else
+                                           :disabled="form_item.name === ''" slot="button"
+                                           class="btn btn-primary" type="submit"
+                                           value="Save" @click.prevent="add">
+                                </template>
                             </template>
                             <template v-else>
                                 <p>Loading</p>

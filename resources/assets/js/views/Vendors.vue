@@ -2,7 +2,7 @@
     <div class="vendors flex">
         <div class="vendors__item card">
             <div class="centreXY">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Add
+                <button type="button" class="btn btn-primary"@click.prevent="vendorModal()">Add
                     Vendor
                 </button>
             </div>
@@ -24,17 +24,30 @@
                 </router-link>
             </div>
         </div>
-        <add-modal></add-modal>
+        <company-vendor-modal></company-vendor-modal>
     </div>
 </template>
 
 <script>
-    import AddModal from '../components/CompanyVendorModal'
+    import CompanyVendorModal from '../components/CompanyVendorModal'
+    import {Bus} from '../app'
 
     export default {
+        components: {CompanyVendorModal},
         computed: {
             vendors() {
                 return this.$store.state.vendors;
+            }
+        },
+        methods:{
+            vendorModal(){
+                let data = {
+                    modal_action : 'add',
+                    modal_condition : 'vendor',
+                    modal_data : '',
+                };
+                $("#company-vendorModal").modal('show');
+                Bus.$emit('company-vendorModal', data);
             }
         }
     }

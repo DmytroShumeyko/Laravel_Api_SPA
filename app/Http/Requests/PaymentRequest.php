@@ -21,7 +21,7 @@ class PaymentRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'payment.date' => 'required|date',

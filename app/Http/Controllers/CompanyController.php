@@ -6,77 +6,77 @@ use App\Company;
 use App\Http\Requests\CompanyRequest;
 use App\Http\Resources\CompanyAllDataResource;
 use App\Http\Resources\CompanyResource;
+use App\Jobs\CacheData;
 
 class CompanyController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \App\Http\Resources\CompanyResource
-     */
-    public function index()
-    {
-        return CompanyResource::collection(auth()->user()->companies);
-    }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\CompanyRequest $request
-     * @return \App\Http\Resources\CompanyResource
+     * @param CompanyRequest $request
+     * @return CompanyResource
      */
-    public function store(CompanyRequest $request)
+    public function store(CompanyRequest $request): CompanyResource
     {
         $data = auth()->user()->companies()
-            ->save(new Company(request()
-                ->only(array_keys($request->rules()))));
+            ->save(new Company([
+                'user_id' => auth()->id(),
+                'name' => $request->input('company.name'),
+                'owner' => $request->input('company.owner'),
+                'phone' => $request->input('company.phone'),
+                'email' => $request->input('company.email'),
+                'site' => $request->input('company.site'),
+                'address' => $request->input('company.address'),
+                'current_account' => $request->input('company.current_account'),
+                'bank' => $request->input('company.bank'),
+                'town' => $request->input('company.town'),
+                'mfo' => $request->input('company.mfo'),
+                'itn' => $request->input('company.itn'),
+                'tax' => $request->input('company.tax')
+            ]));
+        dispatch(new CacheData());
         return new CompanyResource($data);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Company $company
-     * @return \App\Http\Resources\CompanyResource
-     */
-    public function show(Company $company)
-    {
-        return new CompanyResource($company);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\CompanyRequest $request
-     * @param  \App\Company $company
-     * @return \App\Http\Resources\CompanyResource
+     * @param CompanyRequest $request
+     * @param Company $company
+     * @return CompanyResource
      */
-    public function update(CompanyRequest $request, Company $company)
+    public function update(CompanyRequest $request, Company $company): CompanyResource
     {
-        $data = tap($company)->update(request()
-            ->only(array_keys($request->rules())));
+        $companies = auth()->user()->companies;
+        if (!$companies->contains('id', $company->id)) {
+            return response()->json(["error" => ["Access denied"]], 401);
+        }
+        $data = tap($company)->update([
+            'name' => $request->input('company.name'),
+            'owner' => $request->input('company.owner'),
+            'phone' => $request->input('company.phone'),
+            'email' => $request->input('company.email'),
+            'site' => $request->input('company.site'),
+            'address' => $request->input('company.address'),
+            'current_account' => $request->input('company.current_account'),
+            'bank' => $request->input('company.bank'),
+            'town' => $request->input('company.town'),
+            'mfo' => $request->input('company.mfo'),
+            'itn' => $request->input('company.itn'),
+            'tax' => $request->input('company.tax')
+        ]);
+        dispatch(new CacheData());
         return new CompanyResource($data);
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Company $company
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Company $company)
-    {
-        if ($company->delete()){
-            return response()->json(["status" => ["Success"]], 200);
-        }
-        return response()->json(["error" => ["Something wont wrong"]], 500);
-    }
-    /**
      * Get all user's data (vendors, companies).
      *
-     * @return \App\Http\Resources\CompanyAllDataResource
+     * @return CompanyAllDataResource
      */
-    public function getAllCompanyData(){
+    public function getAllCompanyData(): CompanyAllDataResource
+    {
         $company = request()->attributes->get('company');
         return new CompanyAllDataResource($company);
     }

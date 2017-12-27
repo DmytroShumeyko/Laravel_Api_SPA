@@ -183,5 +183,8 @@ export {
     updatePayment,
     updateWithdraw,
     addVendor,
-    updateVendor
+    updateVendor,
+    addProduct,
+    updateProduct,
+    delProduct
 }

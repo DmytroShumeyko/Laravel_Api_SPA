@@ -24,18 +24,17 @@ class VendorRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'owner' => '',
-            'phone' => '',
-            'email' => 'required|unique:vendors,email,'.$this->get('id'),
-            'site' => '',
-            'address' => '',
-            'current_account' => '',
-            'bank' => '',
-            'town' => '',
-            'mfo' => '',
-            'itn' => '',
-            'tax' => ''
+            'vendor.name' => 'required',
+            'vendor.owner' => '',
+            'vendor.phone' => '',
+            'vendor.email' => 'required|unique:vendors,email,'.$this->get('id'),
+            'vendor.site' => '',
+            'vendor.address' => '',
+            'vendor.current_account' => '',
+            'vendor.bank' => '',
+            'vendor.town' => '',
+            'vendor.mfo' => '',
+            'vendor.itn' => ''
         ];
     }
 }

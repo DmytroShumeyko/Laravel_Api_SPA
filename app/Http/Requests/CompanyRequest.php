@@ -21,21 +21,21 @@ class CompanyRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules() :array
     {
         return [
-            'name' => 'required',
-            'owner' => '',
-            'phone' => '',
-            'email' => 'required|unique:companies,email,'.$this->get('id'),
-            'site' => '',
-            'address' => '',
-            'current_account' => '',
-            'bank' => '',
-            'town' => '',
-            'mfo' => '',
-            'itn' => '',
-            'tax' => ''
+            'company.name' => 'required',
+            'company.owner' => '',
+            'company.phone' => '',
+            'company.email' => 'required|unique:companies,email,'.$this->get('id'),
+            'company.site' => '',
+            'company.address' => '',
+            'company.current_account' => '',
+            'company.bank' => '',
+            'company.town' => '',
+            'company.mfo' => '',
+            'company.itn' => '',
+            'company.tax' => ''
         ];
     }
 }

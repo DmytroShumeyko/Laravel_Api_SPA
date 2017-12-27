@@ -21,7 +21,7 @@ class SaleItemRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'product_id' => 'required|numeric',

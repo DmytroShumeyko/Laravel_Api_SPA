@@ -1,8 +1,13 @@
 <template>
     <div class="company">
         <div v-if="company" class="panel panel-default">
-            <div class="panel-heading">
+            <div class="panel-heading company__header">
                 <h1>{{company.name}}</h1>
+                <div class="company__icons">
+                    <button type="button" class="btn btn-primary" @click="companyModal()">Edit
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </button>
+                </div>
             </div>
             <div class="panel-body">
                 <div class="row">
@@ -177,28 +182,25 @@
                 </div>
             </div>
         </div>
-        <!--<company-modal modal_action="edit" :modal_data.sync="order"></company-modal>-->
+        <company-vendor-modal></company-vendor-modal>
         <pay-modal></pay-modal>
     </div>
 </template>
 
 <script>
     import LineChart from '../models/LineChart'
-    import CompanyModal from '../components/CompanyVendorModal'
+    import CompanyVendorModal from '../components/CompanyVendorModal'
     import PayModal from '../components/PWModal'
     import router from '../routes';
     import {Bus} from '../app'
 
     export default {
-        components: {LineChart, CompanyModal, PayModal},
+        components: {LineChart, CompanyVendorModal, PayModal},
         props: ['id'],
 
         data() {
             return {
                 datacollection: {},
-                modal_cond: '',
-                modal_act: '',
-                modal_dat: ''
             }
         },
         created() {
@@ -274,6 +276,15 @@
                 $("#pwModal").modal('show');
                 Bus.$emit('pwModal', data);
             },
+            companyModal(){
+                let data = {
+                    modal_action : 'edit',
+                    modal_condition : 'company',
+                    modal_data : this.company,
+                };
+                $("#company-vendorModal").modal('show');
+                Bus.$emit('company-vendorModal', data);
+            },
             del(item, condition) {
                 this.$swal({
                     title: 'Are you sure?',
@@ -319,6 +330,15 @@
             text-align: center;
             font-size: 3rem;
             color: #3097D1;
+        }
+        &__header {
+            position: relative;
+        }
+        &__icons {
+            position: absolute;
+            right: 0;
+            top: 0;
+            margin: 28px;
         }
     }
 

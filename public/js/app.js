@@ -16291,7 +16291,7 @@ window.Vue.use(__WEBPACK_IMPORTED_MODULE_2_vue_sweetalert___default.a);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('CompanyVendorModal', __webpack_require__(14));
+Vue.component('CompanyVendorModal', __webpack_require__(13));
 Vue.component('OrderModal', __webpack_require__(27));
 Vue.component('SaleModal', __webpack_require__(26));
 Vue.component('PWModal', __webpack_require__(158));
@@ -16310,6 +16310,58 @@ var app = new Vue({
 
 /***/ }),
 /* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(283)
+}
+var normalizeComponent = __webpack_require__(5)
+/* script */
+var __vue_script__ = __webpack_require__(285)
+/* template */
+var __vue_template__ = __webpack_require__(286)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/CompanyVendorModal.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-02cf17ff", Component.options)
+  } else {
+    hotAPI.reload("data-v-02cf17ff", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16517,58 +16569,6 @@ module.exports = {
 		}
 	}
 };
-
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(283)
-}
-var normalizeComponent = __webpack_require__(5)
-/* script */
-var __vue_script__ = __webpack_require__(285)
-/* template */
-var __vue_template__ = __webpack_require__(286)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/CompanyVendorModal.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-02cf17ff", Component.options)
-  } else {
-    hotAPI.reload("data-v-02cf17ff", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
 
 
 /***/ }),
@@ -61920,6 +61920,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateWithdraw", function() { return updateWithdraw; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addVendor", function() { return addVendor; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateVendor", function() { return updateVendor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addProduct", function() { return addProduct; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateProduct", function() { return updateProduct; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "delProduct", function() { return delProduct; });
 var setData = function setData(state, data) {
     state.companies = data.companies;
     state.vendors = data.vendors;
@@ -64899,7 +64902,7 @@ module.exports = function listToStyles (parentId, list) {
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_LineChart__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_CompanyVendorModal__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_CompanyVendorModal__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_CompanyVendorModal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_CompanyVendorModal__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app__ = __webpack_require__(12);
 //
@@ -65039,8 +65042,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 modal_condition: 'company',
                 modal_data: ''
             };
-            $("#companyModal").modal('show');
-            __WEBPACK_IMPORTED_MODULE_2__app__["Bus"].$emit('companyModal', data);
+            $("#company-vendorModal").modal('show');
+            __WEBPACK_IMPORTED_MODULE_2__app__["Bus"].$emit('company-vendorModal', data);
         }
     }
 });
@@ -71023,7 +71026,7 @@ module.exports = function(Chart) {
 var defaults = __webpack_require__(2);
 var Element = __webpack_require__(8);
 var helpers = __webpack_require__(1);
-var Ticks = __webpack_require__(13);
+var Ticks = __webpack_require__(14);
 
 defaults._set('scale', {
 	display: true,
@@ -72914,7 +72917,7 @@ module.exports = function(Chart) {
 
 
 var helpers = __webpack_require__(1);
-var Ticks = __webpack_require__(13);
+var Ticks = __webpack_require__(14);
 
 module.exports = function(Chart) {
 
@@ -73194,7 +73197,7 @@ module.exports = function(Chart) {
 
 var defaults = __webpack_require__(2);
 var helpers = __webpack_require__(1);
-var Ticks = __webpack_require__(13);
+var Ticks = __webpack_require__(14);
 
 module.exports = function(Chart) {
 
@@ -73392,7 +73395,7 @@ module.exports = function(Chart) {
 
 
 var helpers = __webpack_require__(1);
-var Ticks = __webpack_require__(13);
+var Ticks = __webpack_require__(14);
 
 module.exports = function(Chart) {
 
@@ -73644,7 +73647,7 @@ module.exports = function(Chart) {
 
 var defaults = __webpack_require__(2);
 var helpers = __webpack_require__(1);
-var Ticks = __webpack_require__(13);
+var Ticks = __webpack_require__(14);
 
 module.exports = function(Chart) {
 
@@ -81974,6 +81977,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -82435,39 +82444,45 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "form-group" }, [
-                  _c("div", { staticClass: "col-xs-6" }, [
-                    _c("label", { staticClass: "control-label" }, [
-                      _vm._v(
-                        _vm._s(_vm.capitalize(_vm.modal_condition)) + " Tax"
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-xs-6" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.form_item.tax,
-                          expression: "form_item.tax"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { placeholder: "0.05", type: "number" },
-                      domProps: { value: _vm.form_item.tax },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
+                _vm.modal_condition == "company"
+                  ? _c("div", { staticClass: "form-group" }, [
+                      _c("div", { staticClass: "col-xs-6" }, [
+                        _c("label", { staticClass: "control-label" }, [
+                          _vm._v(
+                            _vm._s(_vm.capitalize(_vm.modal_condition)) + " Tax"
+                          )
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-xs-6" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form_item.tax,
+                              expression: "form_item.tax"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { placeholder: "0.05", type: "number" },
+                          domProps: { value: _vm.form_item.tax },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form_item,
+                                "tax",
+                                $event.target.value
+                              )
+                            }
                           }
-                          _vm.$set(_vm.form_item, "tax", $event.target.value)
-                        }
-                      }
-                    })
-                  ])
-                ]),
+                        })
+                      ])
+                    ])
+                  : _vm._e(),
                 _vm._v(" "),
                 _c(
                   "div",
@@ -82507,24 +82522,43 @@ var render = function() {
                             : _vm._e(),
                           _vm._v(" "),
                           _vm.modal_action == "add"
-                            ? _c("input", {
-                                staticClass: "btn btn-primary",
-                                attrs: {
-                                  slot: "button",
-                                  disabled:
-                                    _vm.form_item.name === "" ||
-                                    _vm.form_item.tax === "",
-                                  type: "submit",
-                                  value: "Save"
-                                },
-                                on: {
-                                  click: function($event) {
-                                    $event.preventDefault()
-                                    _vm.add($event)
-                                  }
-                                },
-                                slot: "button"
-                              })
+                            ? [
+                                _vm.modal_condition == "company"
+                                  ? _c("input", {
+                                      staticClass: "btn btn-primary",
+                                      attrs: {
+                                        slot: "button",
+                                        disabled:
+                                          _vm.form_item.name === "" ||
+                                          _vm.form_item.tax === "",
+                                        type: "submit",
+                                        value: "Save"
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          $event.preventDefault()
+                                          _vm.add($event)
+                                        }
+                                      },
+                                      slot: "button"
+                                    })
+                                  : _c("input", {
+                                      staticClass: "btn btn-primary",
+                                      attrs: {
+                                        slot: "button",
+                                        disabled: _vm.form_item.name === "",
+                                        type: "submit",
+                                        value: "Save"
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          $event.preventDefault()
+                                          _vm.add($event)
+                                        }
+                                      },
+                                      slot: "button"
+                                    })
+                              ]
                             : _vm._e()
                         ]
                       : [_c("p", [_vm._v("Loading")])]
@@ -82796,7 +82830,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n#company_orders, #company_sales, #company_payments, #company_withdraws {\n  display: none;\n}\n.company__info {\n  font-size: 2rem;\n  margin: 5px 0;\n  text-align: center;\n}\n.company__primary {\n  text-align: center;\n  font-size: 3rem;\n  color: #3097D1;\n}\n", ""]);
+exports.push([module.i, "\n#company_orders, #company_sales, #company_payments, #company_withdraws {\n  display: none;\n}\n.company__info {\n  font-size: 2rem;\n  margin: 5px 0;\n  text-align: center;\n}\n.company__primary {\n  text-align: center;\n  font-size: 3rem;\n  color: #3097D1;\n}\n.company__header {\n  position: relative;\n}\n.company__icons {\n  position: absolute;\n  right: 0;\n  top: 0;\n  margin: 28px;\n}\n", ""]);
 
 // exports
 
@@ -82808,12 +82842,17 @@ exports.push([module.i, "\n#company_orders, #company_sales, #company_payments, #
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_LineChart__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_CompanyVendorModal__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_CompanyVendorModal__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_CompanyVendorModal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_CompanyVendorModal__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_PWModal__ = __webpack_require__(158);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_PWModal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_PWModal__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__routes__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app__ = __webpack_require__(12);
+//
+//
+//
+//
+//
 //
 //
 //
@@ -83006,15 +83045,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    components: { LineChart: __WEBPACK_IMPORTED_MODULE_0__models_LineChart__["a" /* default */], CompanyModal: __WEBPACK_IMPORTED_MODULE_1__components_CompanyVendorModal___default.a, PayModal: __WEBPACK_IMPORTED_MODULE_2__components_PWModal___default.a },
+    components: { LineChart: __WEBPACK_IMPORTED_MODULE_0__models_LineChart__["a" /* default */], CompanyVendorModal: __WEBPACK_IMPORTED_MODULE_1__components_CompanyVendorModal___default.a, PayModal: __WEBPACK_IMPORTED_MODULE_2__components_PWModal___default.a },
     props: ['id'],
 
     data: function data() {
         return {
-            datacollection: {},
-            modal_cond: '',
-            modal_act: '',
-            modal_dat: ''
+            datacollection: {}
         };
     },
     created: function created() {
@@ -83096,6 +83132,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             };
             $("#pwModal").modal('show');
             __WEBPACK_IMPORTED_MODULE_4__app__["Bus"].$emit('pwModal', data);
+        },
+        companyModal: function companyModal() {
+            var data = {
+                modal_action: 'edit',
+                modal_condition: 'company',
+                modal_data: this.company
+            };
+            $("#company-vendorModal").modal('show');
+            __WEBPACK_IMPORTED_MODULE_4__app__["Bus"].$emit('company-vendorModal', data);
         },
         del: function del(item, condition) {
             this.$swal({
@@ -83595,8 +83640,30 @@ var render = function() {
     [
       _vm.company
         ? _c("div", { staticClass: "panel panel-default" }, [
-            _c("div", { staticClass: "panel-heading" }, [
-              _c("h1", [_vm._v(_vm._s(_vm.company.name))])
+            _c("div", { staticClass: "panel-heading company__header" }, [
+              _c("h1", [_vm._v(_vm._s(_vm.company.name))]),
+              _vm._v(" "),
+              _c("div", { staticClass: "company__icons" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        _vm.companyModal()
+                      }
+                    }
+                  },
+                  [
+                    _vm._v("Edit\n                    "),
+                    _c("i", {
+                      staticClass: "fa fa-pencil",
+                      attrs: { "aria-hidden": "true" }
+                    })
+                  ]
+                )
+              ])
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "panel-body" }, [
@@ -84099,6 +84166,8 @@ var render = function() {
           ])
         : _vm._e(),
       _vm._v(" "),
+      _c("company-vendor-modal"),
+      _vm._v(" "),
       _c("pay-modal")
     ],
     1
@@ -84245,7 +84314,7 @@ exports.push([module.i, "\n.products__item {\n  height: 300px;\n  width: 250px;\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_CompanyVendorModal__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_CompanyVendorModal__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_CompanyVendorModal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_CompanyVendorModal__);
 //
 //
@@ -85198,8 +85267,9 @@ exports.push([module.i, "\n.vendors__item {\n  height: 270px;\n  width: 200px;\n
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_CompanyVendorModal__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_CompanyVendorModal__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_CompanyVendorModal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_CompanyVendorModal__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app__ = __webpack_require__(12);
 //
 //
 //
@@ -85230,13 +85300,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    components: { CompanyVendorModal: __WEBPACK_IMPORTED_MODULE_0__components_CompanyVendorModal___default.a },
     computed: {
         vendors: function vendors() {
             return this.$store.state.vendors;
+        }
+    },
+    methods: {
+        vendorModal: function vendorModal() {
+            var data = {
+                modal_action: 'add',
+                modal_condition: 'vendor',
+                modal_data: ''
+            };
+            $("#company-vendorModal").modal('show');
+            __WEBPACK_IMPORTED_MODULE_1__app__["Bus"].$emit('company-vendorModal', data);
         }
     }
 });
@@ -85253,7 +85336,24 @@ var render = function() {
     "div",
     { staticClass: "vendors flex" },
     [
-      _vm._m(0, false, false),
+      _c("div", { staticClass: "vendors__item card" }, [
+        _c("div", { staticClass: "centreXY" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary",
+              attrs: { type: "button" },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  _vm.vendorModal()
+                }
+              }
+            },
+            [_vm._v("Add\n                Vendor\n            ")]
+          )
+        ])
+      ]),
       _vm._v(" "),
       _vm._l(_vm.vendors, function(item) {
         return _c("div", { staticClass: "vendors__item card" }, [
@@ -85306,34 +85406,12 @@ var render = function() {
         ])
       }),
       _vm._v(" "),
-      _c("add-modal")
+      _c("company-vendor-modal")
     ],
     2
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "vendors__item card" }, [
-      _c("div", { staticClass: "centreXY" }, [
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-primary",
-            attrs: {
-              type: "button",
-              "data-toggle": "modal",
-              "data-target": "#addModal"
-            }
-          },
-          [_vm._v("Add\n                Vendor\n            ")]
-        )
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -85430,7 +85508,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n.vendor__info {\n  font-size: 2rem;\n  text-align: center;\n  margin: 10px 0;\n}\n.vendor__image {\n  height: 50px;\n}\n", ""]);
+exports.push([module.i, "\n.vendor__info {\n  font-size: 2rem;\n  text-align: center;\n  margin: 10px 0;\n}\n.vendor__image {\n  height: 50px;\n}\n.vendor__header {\n  position: relative;\n}\n.vendor__icons {\n  position: absolute;\n  right: 0;\n  top: 0;\n  margin: 28px;\n}\n", ""]);
 
 // exports
 
@@ -85441,6 +85519,9 @@ exports.push([module.i, "\n.vendor__info {\n  font-size: 2rem;\n  text-align: ce
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_CompanyVendorModal__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_CompanyVendorModal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_CompanyVendorModal__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app__ = __webpack_require__(12);
 //
 //
 //
@@ -85507,10 +85588,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+
+
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['id'],
-
+    components: { CompanyVendorModal: __WEBPACK_IMPORTED_MODULE_0__components_CompanyVendorModal___default.a },
     computed: {
         vendor: function vendor() {
             var _this = this;
@@ -85522,7 +85611,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return vendors[index];
         }
     },
-    methods: {}
+    methods: {
+        vendorModal: function vendorModal() {
+            var data = {
+                modal_action: 'edit',
+                modal_condition: 'vendor',
+                modal_data: this.vendor
+            };
+            $("#company-vendorModal").modal('show');
+            __WEBPACK_IMPORTED_MODULE_1__app__["Bus"].$emit('company-vendorModal', data);
+        }
+    }
 });
 
 /***/ }),
@@ -85533,120 +85632,155 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "vendor" }, [
-    _vm.vendor
-      ? _c("div", { staticClass: "panel panel-default" }, [
-          _c("div", { staticClass: "panel-heading" }, [
-            _c("h1", [_vm._v(_vm._s(_vm.vendor.name))])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "panel-body" }, [
-            _c("div", { staticClass: "col-md-6 col-xs-12" }, [
-              _c("div", { staticClass: "vendor__info" }, [
-                _vm._v("Owner: " + _vm._s(_vm.vendor.owner))
-              ]),
+  return _c(
+    "div",
+    { staticClass: "vendor" },
+    [
+      _vm.vendor
+        ? _c("div", { staticClass: "panel panel-default" }, [
+            _c("div", { staticClass: "panel-heading vendor__header" }, [
+              _c("h1", [_vm._v(_vm._s(_vm.vendor.name))]),
               _vm._v(" "),
-              _c("div", { staticClass: "vendor__info" }, [
-                _vm._v("Phone: " + _vm._s(_vm.vendor.phone))
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "vendor__info" }, [
-                _vm._v("Email: " + _vm._s(_vm.vendor.email))
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "vendor__info" }, [
-                _vm._v("WebSite: " + _vm._s(_vm.vendor.site))
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "vendor__info" }, [
-                _vm._v("Address: " + _vm._s(_vm.vendor.address))
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-6 col-xs-12" }, [
-              _c("div", { staticClass: "vendor__info" }, [
-                _vm._v("Town: " + _vm._s(_vm.vendor.town))
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "vendor__info" }, [
-                _vm._v("MFO: " + _vm._s(_vm.vendor.mfo))
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "vendor__info" }, [
-                _vm._v("itn: " + _vm._s(_vm.vendor.itn))
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "vendor__info" }, [
-                _vm._v("Bank: " + _vm._s(_vm.vendor.bank))
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "vendor__info" }, [
-                _vm._v("Account: " + _vm._s(_vm.vendor.current_account))
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", [
-              _c("table", { staticClass: "table table-striped table-hover" }, [
-                _c("caption", [_vm._v("PRODUCTS")]),
-                _vm._v(" "),
-                _vm._m(0, false, false),
-                _vm._v(" "),
+              _c("div", { staticClass: "vendor__icons" }, [
                 _c(
-                  "tbody",
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        _vm.vendorModal()
+                      }
+                    }
+                  },
                   [
-                    _vm._l(_vm.vendor.products, function(item) {
-                      return [
-                        _c("tr", [
-                          _c("td", [
-                            item.image
-                              ? _c("img", {
-                                  staticClass: "vendor__image circle_image",
-                                  attrs: { src: item.image, alt: "image" }
-                                })
-                              : _c("img", {
-                                  staticClass: "vendor__image circle_image",
-                                  attrs: {
-                                    src: "/images/no_image.png",
-                                    alt: "no image"
-                                  }
-                                })
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(item.name))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(item.price))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(item.cost))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(item.description))])
-                        ]),
-                        _vm._v(" "),
-                        _vm._l(item.old_products, function(old_items) {
+                    _vm._v("Edit\n                    "),
+                    _c("i", {
+                      staticClass: "fa fa-pencil",
+                      attrs: { "aria-hidden": "true" }
+                    })
+                  ]
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "panel-body" }, [
+              _c("div", { staticClass: "col-md-6 col-xs-12" }, [
+                _c("div", { staticClass: "vendor__info" }, [
+                  _vm._v("Owner: " + _vm._s(_vm.vendor.owner))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "vendor__info" }, [
+                  _vm._v("Phone: " + _vm._s(_vm.vendor.phone))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "vendor__info" }, [
+                  _vm._v("Email: " + _vm._s(_vm.vendor.email))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "vendor__info" }, [
+                  _vm._v("WebSite: " + _vm._s(_vm.vendor.site))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "vendor__info" }, [
+                  _vm._v("Address: " + _vm._s(_vm.vendor.address))
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-6 col-xs-12" }, [
+                _c("div", { staticClass: "vendor__info" }, [
+                  _vm._v("Town: " + _vm._s(_vm.vendor.town))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "vendor__info" }, [
+                  _vm._v("MFO: " + _vm._s(_vm.vendor.mfo))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "vendor__info" }, [
+                  _vm._v("itn: " + _vm._s(_vm.vendor.itn))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "vendor__info" }, [
+                  _vm._v("Bank: " + _vm._s(_vm.vendor.bank))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "vendor__info" }, [
+                  _vm._v("Account: " + _vm._s(_vm.vendor.current_account))
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", [
+                _c(
+                  "table",
+                  { staticClass: "table table-striped table-hover" },
+                  [
+                    _c("caption", [_vm._v("PRODUCTS")]),
+                    _vm._v(" "),
+                    _vm._m(0, false, false),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      [
+                        _vm._l(_vm.vendor.products, function(item) {
                           return [
                             _c("tr", [
-                              _c("td"),
+                              _c("td", [
+                                item.image
+                                  ? _c("img", {
+                                      staticClass: "vendor__image circle_image",
+                                      attrs: { src: item.image, alt: "image" }
+                                    })
+                                  : _c("img", {
+                                      staticClass: "vendor__image circle_image",
+                                      attrs: {
+                                        src: "/images/no_image.png",
+                                        alt: "no image"
+                                      }
+                                    })
+                              ]),
                               _vm._v(" "),
-                              _c("td"),
+                              _c("td", [_vm._v(_vm._s(item.name))]),
                               _vm._v(" "),
-                              _c("td", [_vm._v(_vm._s(old_items.price))]),
+                              _c("td", [_vm._v(_vm._s(item.price))]),
                               _vm._v(" "),
-                              _c("td", [_vm._v(_vm._s(old_items.cost))]),
+                              _c("td", [_vm._v(_vm._s(item.cost))]),
                               _vm._v(" "),
-                              _c("td", [_vm._v(_vm._s(old_items.description))])
-                            ])
+                              _c("td", [_vm._v(_vm._s(item.description))])
+                            ]),
+                            _vm._v(" "),
+                            _vm._l(item.old_products, function(old_items) {
+                              return [
+                                _c("tr", [
+                                  _c("td"),
+                                  _vm._v(" "),
+                                  _c("td"),
+                                  _vm._v(" "),
+                                  _c("td", [_vm._v(_vm._s(old_items.price))]),
+                                  _vm._v(" "),
+                                  _c("td", [_vm._v(_vm._s(old_items.cost))]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _vm._v(_vm._s(old_items.description))
+                                  ])
+                                ])
+                              ]
+                            })
                           ]
                         })
-                      ]
-                    })
-                  ],
-                  2
+                      ],
+                      2
+                    )
+                  ]
                 )
               ])
             ])
           ])
-        ])
-      : _vm._e()
-  ])
+        : _vm._e(),
+      _vm._v(" "),
+      _c("company-vendor-modal")
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {

@@ -21,14 +21,14 @@ class ProductRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'name' => 'required',
-            'cost' => 'required|numeric',
-            'price' => 'required|numeric',
-            'description' => '',
-            'image' => ''
+            'product.name' => 'required',
+            'product.cost' => 'required|numeric',
+            'product.price' => 'required|numeric',
+            'product.description' => '',
+            'product.image' => ''
         ];
     }
 }

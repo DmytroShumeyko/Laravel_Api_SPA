@@ -24,16 +24,16 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'phone' => '',
-            'email' => 'required|unique:users,email,'.$this->get('id'),
-            'site' => '',
-            'address' => '',
-            'current_account' => '',
-            'bank' => '',
-            'town' => '',
-            'mfo' => '',
-            'itn' => '',
+            'user.name' => 'required',
+            'user.phone' => '',
+            'user.email' => 'required|unique:users,email,'.$this->get('id'),
+            'user.site' => '',
+            'user.address' => '',
+            'user.current_account' => '',
+            'user.bank' => '',
+            'user.town' => '',
+            'user.mfo' => '',
+            'user.itn' => ''
         ];
     }
 }

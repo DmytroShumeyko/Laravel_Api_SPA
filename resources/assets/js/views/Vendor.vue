@@ -1,8 +1,13 @@
 <template>
     <div class="vendor">
         <div v-if="vendor" class="panel panel-default">
-            <div class="panel-heading">
+            <div class="panel-heading vendor__header">
                 <h1>{{vendor.name}}</h1>
+                <div class="vendor__icons">
+                    <button type="button" class="btn btn-primary" @click="vendorModal()">Edit
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </button>
+                </div>
             </div>
             <div class="panel-body">
                 <div class="col-md-6 col-xs-12">
@@ -60,14 +65,17 @@
                 </div>
             </div>
         </div>
+        <company-vendor-modal></company-vendor-modal>
     </div>
-
 </template>
 
 <script>
+    import CompanyVendorModal from '../components/CompanyVendorModal'
+    import {Bus} from '../app'
+
     export default {
         props: ['id'],
-
+        components: {CompanyVendorModal},
         computed: {
             vendor() {
                 let vendors = this.$store.state.vendors;
@@ -75,7 +83,17 @@
                 return vendors[index];
             }
         },
-        methods: {}
+        methods: {
+            vendorModal(){
+                let data = {
+                    modal_action : 'edit',
+                    modal_condition : 'vendor',
+                    modal_data : this.vendor,
+                };
+                $("#company-vendorModal").modal('show');
+                Bus.$emit('company-vendorModal', data);
+            },
+        }
     }
 </script>
 <style lang="scss">
@@ -87,6 +105,15 @@
         }
         &__image {
             height: 50px;
+        }
+        &__header {
+            position: relative;
+        }
+        &__icons {
+            position: absolute;
+            right: 0;
+            top: 0;
+            margin: 28px;
         }
     }
 </style>

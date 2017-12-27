@@ -131,8 +131,8 @@
                     modal_condition : 'company',
                     modal_data : '',
                 };
-                $("#companyModal").modal('show');
-                Bus.$emit('companyModal', data);
+                $("#company-vendorModal").modal('show');
+                Bus.$emit('company-vendorModal', data);
             }
         }
     }

@@ -33,7 +33,7 @@ class WithdrawController extends Controller
             'description' => $request->input('withdraw.description'),
             'value' => $request->input('withdraw.value')
         ]));
-        dispatch(new CacheData());
+        dispatch(new CacheData(auth()->user()));
         return new WithdrawResource($data);
     }
 
@@ -52,6 +52,7 @@ class WithdrawController extends Controller
             'description' => $request->input('withdraw.description'),
             'value' => $request->input('withdraw.value')
         ]);
+        dispatch(new CacheData(auth()->user()));
         return new WithdrawResource($data);
     }
 
@@ -69,7 +70,7 @@ class WithdrawController extends Controller
         }
 
         if (tap($withdraw)->delete()) {
-            dispatch(new CacheData());
+            dispatch(new CacheData(auth()->user()));
             return new WithdrawResource($withdraw);
         }
         return response()->json(["error" => ["Something wont wrong"]], 500);

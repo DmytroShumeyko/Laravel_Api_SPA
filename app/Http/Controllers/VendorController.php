@@ -32,7 +32,7 @@ class VendorController extends Controller
                 'mfo' => $request->input('vendor.mfo'),
                 'itn' => $request->input('vendor.itn')
             ]));
-        dispatch(new CacheData());
+        dispatch(new CacheData(auth()->user()));
         return new VendorResource($data);
     }
 
@@ -62,6 +62,7 @@ class VendorController extends Controller
             'mfo' => $request->input('vendor.mfo'),
             'itn' => $request->input('vendor.itn')
         ]);
+        dispatch(new CacheData(auth()->user()));
         return new VendorResource($data);
     }
 }

@@ -33,7 +33,7 @@ class UserController extends Controller
             'mfo' => $request->input('user.mfo'),
             'itn' => $request->input('user.itn')
         ]);
-        dispatch(new CacheData());
+        dispatch(new CacheData(auth()->user()));
         return new UserResource($data);
     }
 

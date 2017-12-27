@@ -50,7 +50,7 @@ class SaleController extends Controller
                 ]));
             }
         });
-        dispatch(new CacheData());
+        dispatch(new CacheData(auth()->user()));
         return new SaleResource($sale);
     }
 
@@ -87,7 +87,7 @@ class SaleController extends Controller
             }
         });
         $sale = Sale::find($request->input('sale.id'));
-        dispatch(new CacheData());
+        dispatch(new CacheData(auth()->user()));
         return new SaleResource($sale);
     }
 
@@ -111,7 +111,7 @@ class SaleController extends Controller
                 }
             }
         });
-        dispatch(new CacheData());
+        dispatch(new CacheData(auth()->user()));
         return new SaleResource($sale);
     }
 }

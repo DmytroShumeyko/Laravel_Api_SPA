@@ -35,7 +35,7 @@ class CompanyController extends Controller
                 'itn' => $request->input('company.itn'),
                 'tax' => $request->input('company.tax')
             ]));
-        dispatch(new CacheData());
+        dispatch(new CacheData(auth()->user()));
         return new CompanyResource($data);
     }
 
@@ -66,7 +66,7 @@ class CompanyController extends Controller
             'itn' => $request->input('company.itn'),
             'tax' => $request->input('company.tax')
         ]);
-        dispatch(new CacheData());
+        dispatch(new CacheData(auth()->user()));
         return new CompanyAllDataResource($data);
     }
 

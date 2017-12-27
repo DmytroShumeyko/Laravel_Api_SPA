@@ -47,7 +47,7 @@ class OrderController extends Controller
                 ]));
             }
         });
-        dispatch(new CacheData());
+        dispatch(new CacheData(auth()->user()));
         return new OrderResource($order);
     }
 
@@ -79,7 +79,7 @@ class OrderController extends Controller
             }
         });
         $order = Order::find($request->input('order.id'));
-        dispatch(new CacheData());
+        dispatch(new CacheData(auth()->user()));
         return new OrderResource($order);
     }
 
@@ -103,7 +103,7 @@ class OrderController extends Controller
                 }
             }
         });
-        dispatch(new CacheData());
+        dispatch(new CacheData(auth()->user()));
         return new OrderResource($order);
     }
 }

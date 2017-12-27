@@ -33,7 +33,7 @@ class PaymentController extends Controller
             'description' => $request->input('payment.description'),
             'value' => $request->input('payment.value')
         ]));
-        dispatch(new CacheData());
+        dispatch(new CacheData(auth()->user()));
         return new PaymentResource($data);
     }
 
@@ -52,7 +52,7 @@ class PaymentController extends Controller
             'description' => $request->input('payment.description'),
             'value' => $request->input('payment.value')
         ]);
-        dispatch(new CacheData());
+        dispatch(new CacheData(auth()->user()));
         return new PaymentResource($data);
     }
 
@@ -70,7 +70,7 @@ class PaymentController extends Controller
         }
 
         if (tap($payment)->delete()) {
-            dispatch(new CacheData());
+            dispatch(new CacheData(auth()->user()));
             return new PaymentResource($payment);
         }
         return response()->json(["error" => ["Something wont wrong"]], 500);

@@ -3,85 +3,95 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
+use App\Http\Resources\ProductAllDataResource;
 use App\Http\Resources\ProductResource;
+use App\Jobs\CacheData;
 use App\Product;
 use App\Vendor;
 
 class ProductController extends Controller
 {
+
     /**
-     * Display a listing of the resource.
-     *
-     * @param  \App\Vendor $vendor
-     * @return \App\Http\Resources\ProductResource
+     * ProductController constructor.
      */
-    public function index(Vendor $vendor)
+    public function __construct()
     {
-        return ProductResource::collection($vendor->products());
+        $this->middleware('checkVendor')->except('destroy');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\ProductRequest  $request
-     * @param  \App\Vendor $vendor
-     * @return \App\Http\Resources\ProductResource
+     * @param ProductRequest $request
+     * @return ProductResource
      */
-    public function store(ProductRequest $request, Vendor $vendor)
+    public function store(ProductRequest $request)
     {
-        $data = $vendor->products()->save(new Product(request()->only(array_keys($request->rules()))));
-        return new ProductResource($data);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Product  $product
-     * @param  \App\Vendor $vendor
-     * @return \App\Http\Resources\ProductResource
-     */
-    public function show(Vendor $vendor, Product $product)
-    {
+        $vendor = request()->attributes->get('vendor');
+        $product = $vendor->products()->save(new Product([
+            'name' => $request->input('product.name'),
+            'vendor_id' => $request->input('product.vendor_id'),
+            'description' => $request->input('product.description'),
+            'price' => $request->input('product.price'),
+            'cost' => $request->input('product.cost'),
+            'image' => $request->input('product.image'),
+        ]));
+        dispatch(new CacheData(auth()->user()));
         return new ProductResource($product);
     }
+
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\ProductRequest  $request
-     * @param  \App\Vendor $vendor
-     * @param  \App\Product  $product
-     * @return \App\Http\Resources\ProductResource
+     * @param ProductRequest $request
+     * @param Product $product
+     * @return ProductAllDataResource
      */
-    public function update(ProductRequest $request, Vendor $vendor, Product $product)
+    public function update(ProductRequest $request, Product $product)
     {
-        $product->productsHistory()->save($product->except('image','vendor_id'));
-        $data = tap($product)->update(request()->only(array_keys($request->rules())));
-        return new ProductResource($data);
+//        $product->productsHistory()->save($product->except('image', 'vendor_id'));
+        tap($product)->update([
+            'name' => $request->input('product.name'),
+            'vendor_id' => $request->input('product.vendor_id'),
+            'description' => $request->input('product.description'),
+            'price' => $request->input('product.price'),
+            'cost' => $request->input('product.cost'),
+            'image' => $request->input('product.image'),
+        ]);
+        dispatch(new CacheData(auth()->user()));
+        return new ProductAllDataResource($product);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Vendor $vendor
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
+     * @param Vendor $vendor
+     * @param Product $product
+     * @return ProductResource
      */
     public function destroy(Vendor $vendor, Product $product)
     {
+        $vendors = auth()->user()->vendors;
+        if (!$vendors->contains('id', $product->vendor_id)) {
+            return response()->json(["error" => ["Access denied"]], 401);
+        }
         $product_copy = $product;
-        if ($product->delete()){
-            foreach($product_copy->productsHistory as $item){
+        if (tap($product)->delete()) {
+            foreach ($product_copy->productsHistory as $item) {
                 $item->delete();
             }
-            return response()->json(["status" => ["Success"]], 200);
         }
-        return response()->json(["error" => ["Something wont wrong"]], 500);
+        dispatch(new CacheData(auth()->user()));
+        return new ProductResource($product);
     }
+
     public static function getProducts()
     {
         return new ProductResource(auth()->user()->products);
     }
+
     public function allProducts()
     {
         return ProductResource::collection(auth()->user()->products);

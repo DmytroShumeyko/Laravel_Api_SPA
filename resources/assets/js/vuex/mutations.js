@@ -119,12 +119,12 @@ const delWithdraw = (state, data) => {
  */
 const addProduct = (state, data) => {
     state.products.unshift(data);
-    $('#company-vendorModal').modal('hide');
+    $('#productModal').modal('hide');
 };
 const updateProduct = (state, data) => {
     let index = state.products.findIndex((x) => x.id === data.id);
     state.products[index] = data;
-    $('#company-vendorModal').modal('hide');
+    $('#productModal').modal('hide');
 };
 const delProduct = (state, data) => {
     let index = state.products.findIndex((x) => x.id === data.id);

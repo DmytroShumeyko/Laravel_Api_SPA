@@ -2,7 +2,7 @@
     <div class="products flex">
         <div class="products__item card">
             <div class="centreXY">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Add
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#productModal">Add
                     Product
                 </button>
             </div>
@@ -18,7 +18,9 @@
                     <div class="col-md-6 col-xs-12">Cost: {{item.cost}}</div>
                     <div class="col-md-6 col-xs-12">Price: {{item.price}}</div>
                 </div>
-                <div class="products__sales">Total sales: {{item.sale_items.length}}</div>
+                <div class="products__sales">Total sales: {{item.sale_items == undefined ? 0 :
+                    item.sale_items.length}}
+                </div>
                 <div class="products__sold">Total sold: {{totalSold(item)}}</div>
             </div>
             <div class="products__footer">
@@ -27,14 +29,15 @@
                 </router-link>
             </div>
         </div>
-        <add-modal></add-modal>
+        <product-modal modal_action="add" modal_data=""></product-modal>
     </div>
 </template>
 
 <script>
-    import AddModal from '../components/CompanyVendorModal'
+    import ProductModal from '../components/ProductModal'
 
     export default {
+        components: {ProductModal},
         computed: {
             products() {
                 return this.$store.state.products;
@@ -43,9 +46,11 @@
         methods: {
             totalSold(item) {
                 var total = 0;
-                item.sale_items.forEach(function (sale) {
-                    total += parseInt(sale.qtu);
-                });
+                if (item.sale_items != undefined) {
+                    item.sale_items.forEach(function (sale) {
+                        total += parseInt(sale.qtu);
+                    });
+                }
                 return total;
             }
         }

@@ -26,6 +26,7 @@ Vue.component('CompanyVendorModal', require('./components/CompanyVendorModal'));
 Vue.component('OrderModal', require('./components/OrderModal'));
 Vue.component('SaleModal', require('./components/SaleModal'));
 Vue.component('PWModal', require('./components/PWModal'));
+Vue.component('ProductModal', require('./components/ProductModal'));
 
 export const Bus = new Vue();
 

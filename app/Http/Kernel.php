@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\App\CheckCompany;
+use App\Http\Middleware\App\CheckVendor;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -60,5 +61,6 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'checkCompany' => CheckCompany::class,
+        'checkVendor' => CheckVendor::class,
     ];
 }

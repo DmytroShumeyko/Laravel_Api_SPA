@@ -47,7 +47,7 @@ Route::prefix('api')->group(function () {
         Route::resource('/vendors', 'VendorController', ['only' => [
             'store', 'update'
         ]]);
-        Route::resource('/vendors/{vendor}/products', 'ProductController', ['only' => [
+        Route::resource('/products', 'ProductController', ['only' => [
             'store', 'update', 'destroy'
         ]]);
         Route::resource('/products/{product}/products_history', 'ProductHistoryController', ['only' => [

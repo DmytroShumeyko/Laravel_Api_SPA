@@ -17,7 +17,7 @@ class CreateSalesTable extends Migration
             $table->increments('id')->index();
             $table->integer('company_id')->index();
             $table->date('date')->index();
-            $table->string('ttn', 20)->unique();
+            $table->string('ttn', 20)->unique()->nullable();;
             $table->decimal('cost', 10, 2);
             $table->decimal('price', 10, 2);
             $table->decimal('payed', 10, 2);

@@ -1,8 +1,16 @@
 <template>
     <div class="product">
         <div v-if="product" class="panel panel-default">
-            <div class="panel-heading">
+            <div class="panel-heading product__header">
                 <h1>{{product.name}}</h1>
+                <div class="product__icons">
+                    <button type="button" class="btn btn-primary" @click="edit()">Edit
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="btn btn-primary" @click="del()">Delete
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </button>
+                </div>
             </div>
             <div class="panel-body">
                 <div class="row">
@@ -20,7 +28,7 @@
                         <div class="product__info">Vendor: {{vendor.name}}</div>
                     </div>
                 </div>
-                <div class="row">
+                <div v-if="product.product_chart != undefined" class="row">
                     <div class="col-md-12">
                         <line-chart :chart-data="datacollection"
                                     :options="{responsive: true, maintainAspectRatio: true,
@@ -53,7 +61,7 @@
                                     :height="300"></line-chart>
                     </div>
                 </div>
-                <div class="row">
+                <div v-if="product.product_chart != undefined" class="row">
                     <div class="col-md-12">
                         <line-chart :chart-data="datacollection2"
                                     :options="{responsive: true, maintainAspectRatio: true,
@@ -150,14 +158,16 @@
                 </div>
             </div>
         </div>
+        <product-modal modal_action="edit" :modal_data.sync="product"></product-modal>
     </div>
 </template>
 
 <script>
     import LineChart from '../models/LineChart'
+    import ProductModal from '../components/ProductModal'
 
     export default {
-        components: {LineChart},
+        components: {LineChart,ProductModal},
         props: ['id'],
 
         data() {
@@ -171,7 +181,9 @@
             let products = this.$store.state.products;
             let index = products.findIndex((x) => x.id === this.id);
             this.product = products[index];
-            this.fillData();
+            if (this.product.product_chart != undefined){
+                this.fillData();
+            }
         },
         computed: {
             vendor() {
@@ -181,9 +193,11 @@
             },
             totalSold() {
                 var total = 0;
-                this.product.sale_items.forEach(function (sale) {
-                    total += parseInt(sale.qtu);
-                });
+                if (this.product.sale_items != undefined) {
+                    this.product.sale_items.forEach(function (sale) {
+                        total += parseInt(sale.qtu);
+                    });
+                }
                 return total;
             }
         },
@@ -230,6 +244,35 @@
                         pointHitRadius: 10
                     }]
                 };
+            },
+            del() {
+                this.$swal({
+                    title: 'Are you sure?',
+                    text: 'You will not be able to recover this order!',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'No, keep it'
+                }).then(function () {
+                        let data = {'condition':'product', 'data': this.product};
+                        this.$store.dispatch('deleteItem', data)
+                            .then(() => {
+                                router.go(-1);
+                            });
+                    }.bind(this),
+                    function (dismiss) {
+                        if (dismiss === 'cancel') {
+                            this.$swal(
+                                'Cancelled',
+                                'Order is safe :)',
+                                'error'
+                            );
+                        }
+                    }.bind(this)
+                );
+            },
+            edit() {
+                $("#productModal").modal('show');
             }
         }
     }
@@ -243,6 +286,15 @@
     .product{
         &__image {
             height: 110px;
+        }
+        &__header {
+            position: relative;
+        }
+        &__icons {
+            position: absolute;
+            right: 0;
+            top: 0;
+            margin: 28px;
         }
     }
     .circle_image{
